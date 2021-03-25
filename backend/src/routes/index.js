@@ -1,5 +1,5 @@
 /**
- * file: index.js
+ * file: src/routes/index.js
  * Description: Responsável pela rota default da API
  * Data: 23/03/2021
  */

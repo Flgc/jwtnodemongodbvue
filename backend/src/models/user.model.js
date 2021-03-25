@@ -1,5 +1,5 @@
 /**
- * file: app.js
+ * file: src/models/user.model.js
  * Description: Responsável pelo modelo da classe 'User'
  * Data: 24/03/2021
  */
