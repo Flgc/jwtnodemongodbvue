@@ -1,7 +1,7 @@
 /**
  * file: src/controllers/user.controllers.js
  * Description: Responsável pelo CRUD da classe: 'User'
- * Data: 25/03/2021
+ * Data: 26/03/2021
  */
 
 const User = require('../models/user.model');
@@ -31,10 +31,25 @@ exports.registerNewUser = async (req, res) => {
 };
 
 // ==> Método responsável por verificar se o email informado no login existe na base de dados
-exports.loginUser = async (req, res) => {
+exports.loginUser = async (req, res) => 
+{
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const user =  await User.findByCredentials(email, password);
+
+    if (!user) {
+      return res.status(401).json({ error: 'Erro ao realizar login! Verifique suas credenciais!' }); 
+    }
+
+    // ==> Gera o token para o usuário
+    const token = await user.generateAuthToken();
+    res.status(201).json({ message: 'Usuário(a) logado com sucesso!', user, token });
+
+  } catch (err) {
+    res.status(400).json({ err: err });
+  }
 };
 
 // ==> Método responsável por verificar se o email informado no login existe na base de dados
-exports.returnUserProfile = async (req, res) => {
-}
-
+exports.returnUserProfile = async (req, res) => {}

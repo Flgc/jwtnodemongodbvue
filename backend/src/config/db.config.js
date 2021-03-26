@@ -9,7 +9,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // ==> Aqui posso ajutar outro tipo de base de dados facilmente
-modeule.exports = {
+module.exports = {
   local: {
     localDatabaseUrl: process.env.DB_URI,
     secret: "password"

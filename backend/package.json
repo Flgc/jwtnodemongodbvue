@@ -23,7 +23,7 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node server.js",
-    "lint": "eslint --fix --ext .js, .jsx"
+    "lint": "eslint --fix --ext .js"
   },
   "keywords": [],
   "author": "",
