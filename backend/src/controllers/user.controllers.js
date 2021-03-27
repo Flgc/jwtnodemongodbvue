@@ -4,51 +4,58 @@
  * Data: 26/03/2021
  */
 
-const User = require('../models/user.model');
+const User = require("../models/user.model");
 
-// ==> Async e await
+// ==> conceito de Async e Await
 
 // ==> Método responsável por verificar se o email informado do novo cadastro já existe na base de dados
 exports.registerNewUser = async (req, res) => {
   try {
-    let isUser = await User.find({ email: req.body.email });
-    console.log(isUser);
+    // => Verificando se o usuário já possui algum e-mail já cadastrado:
+    const isUser = await User.find({ email: req.body.email });
 
     if (isUser.length >= 1) {
-      return res.status(409).json({ message: 'Sorry! This email is already registered!'})
+      return res
+        .status(409)
+        .json({ message: "Atenção! E-mail já registrado anteriormente!" });
     }
 
-    // ==> Registra o novo login e senha
+    // ==> Registra o novo usuário
     const newUser = new User(req.body);
-    const user = await newUser.save(); // ==> '.save' é do mongoose armazena o login e senha que esta na tela nessa variavel 
+    const user = await newUser.save(); // ==> '.save' é do mongoose armazena o login e senha que esta na variavel 'newUser'
 
-    // ==> Gera o token  para liberar o novo registro
+    // ==> Gera o token para novo usuário
     const token = await newUser.generateAuthToken();
-    res.status(201).json({ message: 'User created successfully!', user, token });    
+    res
+      .status(201)
+      .json({ message: "Usuário(a) registrado(a) com sucesso!", user, token });
   } catch (err) {
-    res.status(400).json({ err: err })
+    res.status(400).json({ err });
   }
 };
 
-// ==> Método responsável por verificar se o email informado no login existe na base de dados
-exports.loginUser = async (req, res) => 
-{
+// ==> Método responsável por realizar novo login 'User':
+exports.loginUser = async (req, res) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
-    const user =  await User.findByCredentials(email, password);
+    const { email } = req.body;
+    const { password } = req.body;
+    const user = await User.findByCredentials(email, password);
 
-    // ==> Tem erro, não esta funcionando.
+    // ==> TODO  Não esta retornando o error
     if (!user) {
-      return res.status(401).json({ error: 'Erro ao realizar login! Verifique suas credenciais!' }); 
+      return res.status(401).json({
+        error: "Erro ao Logar! Verifique suas credenciais de autenticação!",
+      });
     }
 
     // ==> Gera o token para o usuário
     const token = await user.generateAuthToken();
-    res.status(201).json({ message: 'Usuário(a) logado com sucesso!', user, token });
 
+    return res
+      .status(201)
+      .json({ message: "Usuário(a) logado com sucesso!", user, token });
   } catch (err) {
-    res.status(400).json({ err: err });
+    res.status(400).json({ err });
   }
 };
 
