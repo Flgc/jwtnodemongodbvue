@@ -38,6 +38,7 @@ exports.loginUser = async (req, res) =>
     const password = req.body.password;
     const user =  await User.findByCredentials(email, password);
 
+    // ==> Tem erro, não esta funcionando.
     if (!user) {
       return res.status(401).json({ error: 'Erro ao realizar login! Verifique suas credenciais!' }); 
     }
@@ -51,5 +52,7 @@ exports.loginUser = async (req, res) =>
   }
 };
 
-// ==> Método responsável por verificar se o email informado no login existe na base de dados
-exports.returnUserProfile = async (req, res) => {}
+// ==> Retorna os dados do usuário logado através do token armazenado na base de dados
+exports.returnUserProfile = async (req, res) => {
+  await res.json(req.userData);
+};
