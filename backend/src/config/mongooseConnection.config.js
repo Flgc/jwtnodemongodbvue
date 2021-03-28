@@ -1,4 +1,6 @@
 /**
+ * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
+ *
  * file: src/config/mongooseConnection.config.js
  * Description: Responsável pela conexão através do mongoose
  * Data: 27/03/2021

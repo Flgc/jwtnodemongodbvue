@@ -1,4 +1,6 @@
 /**
+ * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
+ *
  * file: src/routes/index.js
  * Description: Responsável pela rota default da API
  * Data: 23/03/2021
@@ -12,7 +14,8 @@ const router = express.Router();
 router.get("/api/v1", (req, res) => {
   res.status(200).send({
     success: true,
-    message: "Seja bem-vindo(a) a API Node.js + MongoDb",
+    message:
+      "Projeto Aplicado - Controle de Manutenção API com Node.js & MongoDb",
     version: "1.0.0",
   });
 });

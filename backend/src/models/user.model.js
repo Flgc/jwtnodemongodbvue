@@ -1,4 +1,6 @@
 /**
+ * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
+ *
  * file: src/models/user.model.js
  * Description: Responsável pelo modelo da classe 'User'
  * Data: 24/03/2021
