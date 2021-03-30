@@ -1,0 +1,81 @@
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,'minimum-scale=0.1">
+  <title>qrcode (264×264)</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+  </style>
+</head>
+<body style="margin: 0;background: #ffffff;text-align-last: center; overflow: hidden;">
+<div style="padding-top: 10px;">
+  <span style="text-align: center">
+    <h1>Gerando QRCODE... Aguarde...<br></h1>
+  </span>
+</div>
+
+<div style="text-align: center">
+  <div id="qrcode"></div>
+</div>
+
+<div style="text-align: center; padding-top: 10px;">
+  <div id="read_qr"></div>
+</div>
+
+</body>
+<script>
+
+  function getUrlVar() {
+    let result = {};
+    let location = window.location.href.split('#');
+    let parts = location[0].replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        result [key] = value;
+    });
+    return result;
+  }
+
+  let key = getUrlVar()["sessionName"];
+
+  window.addEventListener('load', (event) => {
+    window.setTimeout(() => {
+      get_qrcode(key);
+    }, 10000);
+  });
+
+  $('#qrcode').html('<button onclick="get_qrcode(key)" style="cursor: pointer;"><span><img alt="Click me!" style="margin;padding: 20px; width: 300px;height: 300px;" src="/media/reload.png" width="150" height="150"/></span></button>');
+
+  window.setInterval(function(){
+    get_qrcode(key);
+  }, 20000);
+
+  function get_qrcode(key) {
+    let payload = {
+      sessionName: key,
+    }
+
+    $.ajax({
+      type: 'get',
+      url: '/new_qrcode/',
+      contentType: "application/json; charset=utf-8",
+      data: payload,
+      success: function (response) {
+        if (response.success) {
+          if (response.is_active){
+            //AQUI PODEMOS REDIRECIONAR PARA UMA OUTRA ROTA QUALQUER,POIS O USUÁRIO JÁ ESTARÁ CONECTADO...OU PODEMOS FAZER ISSO LÁ NO INDEX NA ROTA QRCODE
+            window.location = '/';
+            window.location.href = '/logado';
+            
+          } else {
+            $('#qrcode').html('<img alt="Click me!" style="-webkit-user-select: none;margin: auto;cursor: zoom-in;padding: 20px;width: 300px;height: 300px;" src="'+ response.object +'">');
+            $('#read_qr').html('<h1>Acesse o whatsapp, clique em Mais ou Ajustes<br>Escolha whatsapp web, aponte a câmera para essa tela e leia o qrcode.</h1>');
+          }
+        }
+      },
+      error: function (XMLHttpRequest, textStatus, errorThrown) {
+        //
+      }
+    });
+  }
+
+</script>
+</html>
