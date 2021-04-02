@@ -7,8 +7,9 @@
  */
 
 const express = require("express");
-const Sessions = require("../controllers/sessions");
+const Sessions = require("../controllers/sessions.controllers");
 const router = express.Router();
+const path = require("path");
 
 // ==> v1 = 1ª versao da API:
 router.get("/api/v1", (req, res) => {
@@ -42,7 +43,7 @@ router.get("/start", async (req, res, next) => {
   const session = await Sessions.start(req.query.sessionName);
 
   if (["CONNECTED", "QRCODE", "STARTING"].includes(session.state)) {
-    //res.status(200).json({ result: 'success', message: session.state });
+    res.status(200).json({ result: "success", message: session.state });
 
     if (session.status === "notLogged" && session.state != "CONNECTED") {
       console.log("Estado da conexão");
@@ -50,14 +51,12 @@ router.get("/start", async (req, res, next) => {
 
       res.redirect(
         "/qrcode?sessionName=" + req.query.sessionName + "&image=true"
-      ); //Com esse redirecionamento será possível passar pela rota de qrcode sem precisar digitar no navegador
+      ); //Rota do qrcode sem precisar digitar no navegador
     }
 
     if (session.status === "isLogged" || session.status === "inChat") {
-      res.redirect("/logado?numero=552199999930"); //Com esse redirecionamento será possível passar pela rota de qrcode sem precisar digitar no navegador
+      res.redirect("/logado?numero=5521998535530"); //Com esse redirecionamento será possível passar pela rota de qrcode sem precisar digitar no navegador Recebe Json de conversa do contato especificado no console.
     }
-
-    //if (["QRCODE", "STARTING"].includes(session.state) ){ session.state = "CONNECTED"; console.log('Status alterado para CONECTADO.') }
   } else {
     res.status(200).json({ result: "error", message: session.state });
     console.log("Erro ao tentar conectar" + session.state);
@@ -203,17 +202,6 @@ router.get("/doc", async function (req, res, next) {
   res.json(result);
 });
 
-router.get("/doc", async function (req, res, next) {
-  var result = await Sessions.sendFile(
-    req.query.sessionName,
-    req.query.number,
-    req.query.path,
-    req.query.filename,
-    req.query.caption
-  );
-  res.json(result);
-});
-
 router.get("/sendFile", async (req, res, next) => {
   var result = await Sessions.sendFile(
     req.body.sessionName,
@@ -246,7 +234,8 @@ async function exitHandler(options, exitCode) {
   if (options.exit) {
     process.exit();
   }
-} //exitHandler
+}
+
 //do something when app is closing
 process.on("exit", exitHandler.bind(null, { cleanup: true }));
 //catches ctrl+c event
