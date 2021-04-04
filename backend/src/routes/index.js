@@ -43,15 +43,14 @@ router.get("/start", async (req, res, next) => {
   const session = await Sessions.start(req.query.sessionName);
 
   if (["CONNECTED", "QRCODE", "STARTING"].includes(session.state)) {
-    res.status(200).json({ result: "success", message: session.state });
-
     if (session.status === "notLogged" && session.state != "CONNECTED") {
-      console.log("Estado da conexão");
-      console.log(session.state);
-
-      res.redirect(
-        "/qrcode?sessionName=" + req.query.sessionName + "&image=true"
-      ); //Rota do qrcode sem precisar digitar no navegador
+      console.log("passei por aqui");
+      if (session.status === "inChat") {
+        console.log("DENTRO ====");
+        res.redirect(
+          "/qrcode?sessionName=" + req.query.sessionName + "&image=true"
+        ); //Redirecionamento para passar pela rota de qrcode sem precisar digitar no navegador
+      }
     }
 
     if (session.status === "isLogged" || session.status === "inChat") {

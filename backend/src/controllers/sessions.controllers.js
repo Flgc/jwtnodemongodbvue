@@ -23,6 +23,7 @@ const venom = require("venom-bot");
 // const grpVendas = process.env.GRP_VENDAS;
 // const grpAssistencia = process.env.GRP_ASSISTENCIA;
 
+// Executa a API do Venon - (Start)
 module.exports = class Sessions {
   static async start(sessionName) {
     Sessions.sessions = Sessions.sessions || []; //start array
@@ -45,7 +46,10 @@ module.exports = class Sessions {
       ["isLogged"].includes(session.status)
     ) {
       console.log(
-        "Estado da Sessão: " + session.state + ". Status: " + session.status
+        "START Venon-bot: Estado da Sessão: " +
+          session.state +
+          ". Status: " +
+          session.status
       );
       session.client.then((client) => {
         client.useHere();
@@ -57,6 +61,7 @@ module.exports = class Sessions {
     return session;
   } //start
 
+  // Adiciona nova sessão
   static async addSesssion(sessionName) {
     var newSession = {
       name: sessionName,
@@ -75,6 +80,7 @@ module.exports = class Sessions {
     return newSession;
   } //addSession
 
+  // Inicia a sessão
   static async initSession(sessionName) {
     var session = Sessions.getSession(sessionName);
     const client = await venom.create(
@@ -82,11 +88,11 @@ module.exports = class Sessions {
       (base64Qr) => {
         session.state = "QRCODE";
         session.qrcode = base64Qr;
-        console.log("new qrcode updated - session.state: " + session.state);
+        console.log("New QRCODE updated - session.state: " + session.state);
       },
       (statusFind) => {
         session.status = statusFind;
-        console.log("session.status: " + session.status);
+        console.log("initSession() ==>  session.status: " + session.status);
       },
       {
         folderNameToken: "tokens",
@@ -149,19 +155,38 @@ module.exports = class Sessions {
     }
   } //Após ler o QRCode, forçar a mudança do estado para conectado.
 
-  //Auto resposta
+  //Auto resposta do Venom-Bot
   static async setup(sessionName) {
     var session = Sessions.getSession(sessionName);
     await session.client.then((client) => {
       client.onStateChange((state) => {
         session.state = state;
-        console.log("session.state: " + state);
-      }); //.then((client) => Sessions.startProcess(client));
+        console.log("");
+        console.log(
+          "Auto resposta do Venom-Bot - 'session.state: ==> ' " + state
+        );
+        console.log("");
+      });
 
       client.onMessage(async (message) => {
-        //todas as mensagens chegam aqui... voce pode tomar decisões de respostas aqui.
-        console.log(message); // objeto recebido quando chega msg
-        client.sendText(messages.from, "Recebido via bot"); // exemplo de resposta.
+        //todas as mensagens chegam aqui... Podemos tomar decisões de respostas aqui.
+        console.log("");
+        console.log(
+          " === Veja aqui o conteúdo do 'message' que retorna no 'client.onMessage' === "
+        );
+        console.log("");
+        console.log(message); // objeto recebido quando chega mensagem pelo whatsapp
+
+        console.log("");
+
+        //Todo ==> Implementar mensagem de (Bom dia, Boa Tarde e Boa noite) + nome do usuário que vem no retorno do message {contact: {pushname:''}
+
+        console.log(
+          " === Logo após será enviao resposta automática através do 'client.sendText(messages.from,'???')' === "
+        );
+        client.sendText(message.from, "Recebido via bot"); // exemplo de resposta.
+
+        console.log("");
       });
 
       //Em caso de chamdas de voz...
@@ -172,11 +197,12 @@ module.exports = class Sessions {
           "Desculpa! Sou um atendente virtual.\nAinda não consigo atender chamadas."
         );
         //Comunica a alguém que houve uma chamada perdida.
-        client.sendText("558499495226@c.us", "Nova chamada perdida.");
+        client.sendText("5521998535530@c.us", "Nova chamada perdida.");
       });
     });
   } //setup
 
+  // Fecha a sessão
   static async closeSession(sessionName) {
     var session = Sessions.getSession(sessionName);
     if (session) {
