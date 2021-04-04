@@ -9,19 +9,9 @@
 // person.js
 "use strict";
 
-// const os = require("os");
-// const fs = require("fs");
-// const mime = require("mime-types");
-// const path = require("path");
 const venom = require("venom-bot");
-// const dialogflow = require("@google-cloud/dialogflow").v2beta1;
-// const uuid = require("uuid");
-// const { json } = require("express");
-// const { Session } = require("inspector");
-// const puppeteer = require("puppeteer");
-
-// const grpVendas = process.env.GRP_VENDAS;
-// const grpAssistencia = process.env.GRP_ASSISTENCIA;
+const fs = require("fs");
+const mime = require("mime-types");
 
 // Executa a API do Venon - (Start)
 module.exports = class Sessions {
@@ -184,9 +174,97 @@ module.exports = class Sessions {
         console.log(
           " === Logo após será enviao resposta automática através do 'client.sendText(messages.from,'???')' === "
         );
-        client.sendText(message.from, "Recebido via bot"); // exemplo de resposta.
+
+        // client.sendText(message.from, "Recebido via bot"); // exemplo de resposta automática. Desabilitado no momento
 
         console.log("");
+
+        // ===> Todo criar rotina para vincular código do usuário no banco de dados com o nome do arquivo, incluir o código no nome.
+
+        // ===> Downloading Files Video, can photo and image
+
+        if (message.isMedia === true || message.isMMS === true) {
+          const buffer = await client.decryptFile(message);
+
+          const messagefrom = message.from.substring(0, 13); // Recebe o número de quem esta enviando a mensagem
+          //console.log(messagefrom);
+
+          const timestamp = message.timestamp; // Retorno: 09/12/2018 18:36:01
+          const xdata = new Date(timestamp * 1000);
+          //console.log("xdata: " + xdata.toISOString()); //Retorno exemplo: 2021-04-04T19:51:42.000Z
+
+          const data = xdata.toISOString().replace(/[^\d]/g, ""); //Retorno:  20210404195142000
+          //console.log(data);
+
+          //No bloco abaixo gero o nome do arquivo e extensão
+          const nametemp = messagefrom + "-" + data;
+          const fileName = `${nametemp}.${mime.extension(message.mimetype)}`;
+
+          await fs.writeFile("./src/media/" + fileName, buffer, (err) => {
+            // At this point you can do whatever you want with the buffer
+            // here's the file ==> console.log(`Mensagem buffer: ', ${buffer}`);
+            // here's the namefile ==> console.log(`Mensagem file: ', ${fileName}`);
+
+            console.log(`Getting Mensagem file: ${fileName}`);
+          });
+        }
+
+        // ===> microfone Files
+
+        if (message.type === "ptt" || message.type === "Audio") {
+          const buffer = await client.decryptFile(message);
+          const messagefrom = message.from.substring(0, 13); // Recebe o número de quem esta enviando a mensagem
+          //console.log(messagefrom);
+
+          const timestamp = message.timestamp; // Retorno: 09/12/2018 18:36:01
+          const xdata = new Date(timestamp * 1000);
+          //console.log("xdata: " + xdata.toISOString()); //Retorno exemplo: 2021-04-04T19:51:42.000Z
+
+          const data = xdata.toISOString().replace(/[^\d]/g, ""); //Retorno:  20210404195142000
+          //console.log(data);
+
+          //No bloco abaixo gero o nome do arquivo e extensão
+          const nametemp = messagefrom + "-" + data;
+          const fileName = `${nametemp}.${mime.extension(message.mimetype)}`;
+
+          await fs.writeFile("./src/media/" + fileName, buffer, (err) => {
+            // At this point you can do whatever you want with the buffer
+            // here's the file ==> console.log(`Mensagem buffer: ', ${buffer}`);
+            // here's the namefile ==> console.log(`Mensagem file: ', ${fileName}`);
+
+            //  console.log(`Mensagem buffer: , ${buffer}`);
+            console.log(`Getting Mensagem file: ${fileName}`);
+          });
+        }
+
+        // ===> document Files
+
+        if (message.type === "document") {
+          const buffer = await client.decryptFile(message);
+
+          // No bloco abaixo gero o nome do arquivo e extensão
+          const nametemp = message.caption;
+          const fileName = `${nametemp.substring(
+            0,
+            nametemp.length - 4
+          )}.${mime.extension(message.mimetype)}`;
+
+          await fs.writeFile("./src/media/" + fileName, buffer, (err) => {
+            // At this point you can do whatever you want with the buffer
+            // here's the file ==> console.log(`Mensagem buffer: ', ${buffer}`);
+            // here's the namefile ==> console.log(`Mensagem file: ', ${fileName}`);
+
+            //  console.log(`Mensagem buffer: , ${buffer}`);
+            console.log(`Getting Mensagem file: ${fileName}`);
+          });
+        }
+
+        // ===> text chat
+
+        if (message.type === "chat") {
+          const buffer = message.body;
+          console.log(`Mensagem buffer: , ${buffer}`);
+        }
       });
 
       //Em caso de chamdas de voz...

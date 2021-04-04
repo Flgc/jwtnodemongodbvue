@@ -1,7 +1,11 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "PA IGTI - Controle de Manutenção API com Node.js & MongoDb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Flgc/jwtnodemongodbvue.git"
+  },
   "main": "server.js",
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -27,7 +31,18 @@
     "start": "node server.js",
     "lint": "eslint --fix --ext .js"
   },
-  "keywords": [],
+  "keywords": [
+    "node.js",
+    "javascript",
+    "MongoDB",
+    "Mongoose",
+    "jsonwebtoken",
+    "bcrypt",
+    "bcryptjs",
+    "venom-bot",
+    "express",
+    "morgan"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }
