@@ -74,6 +74,22 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
+// ==> Atualiza user
+userSchema.statics.findOneAndUpdate = async (
+  name,
+  email,
+  phone,
+  renav,
+  plcar
+) => {
+  const user = await User.findOne({ name });
+  if (!user) {
+    throw new Error({ error: "Usuário inválido!" });
+  }
+
+  return user;
+};
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

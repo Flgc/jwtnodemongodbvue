@@ -65,3 +65,51 @@ exports.loginUser = async (req, res) => {
 exports.returnUserProfile = async (req, res) => {
   await res.json(req.userData);
 };
+
+// ==> Retorna todos usuário cadastrados na base de dados
+exports.returnAllUser = async (req, res) => {
+  User.find(function (err, user) {
+    if (err)
+      res.status(401).json({ message: "Erro ao listar usuários..:" + err });
+
+    res.json(user);
+  });
+};
+
+// ==> Rota responsavel por retornar usuário por Id
+exports.returnUserId = async (req, res) => {
+  User.findById(req.params.user_id, function (error, user) {
+    if (error) res.status(401).json({ message: "Id inválido..: " + error });
+
+    res.json(user);
+  });
+};
+
+// ==> Rota responsavel por atualizar usuário por Id
+exports.updtUser = async (req, res) => {
+  var user = new User();
+  //Primeiro - Procurar o ID
+  User.findById(req.params.user_id, function (error, user) {
+    if (error) res.status(401).json({ message: "Id inválido!" });
+  });
+
+  //Segundo - Após achar atualiza os objetos
+  user.name = req.body.name;
+  user.email = req.body.email;
+  user.password = req.body.password;
+  user.phone = req.body.phone;
+  user.renav = req.body.renav;
+  user.plcar = req.body.plcar;
+
+  //Terceiro - Persistir as propriedades no dados no banco
+  user.update(function (error) {
+    if (error)
+      res
+        .status(400)
+        .json({ message: "Error ao atualizar o usuário..: " + error });
+
+    res
+      .status(201)
+      .json({ message: "Usuário(a) atualizado com sucesso!", user });
+  });
+};
