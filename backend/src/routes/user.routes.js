@@ -27,7 +27,10 @@ router.get("/allUsers", auth, userController.returnAllUser);
 // ==> Rota responsavel por retornar usuário por Id: 'User': (GET) http://localhost:3333/api/v1/userId/:
 router.get("/userId/:user_id", auth, userController.returnUserId);
 
-// ==> Rota responsavel por atualizar usuário por Id 'User': (PUT) http://localhost:3333/api/v1/updtUser/:
-router.put("/updtUser/:user_id", auth, userController.updtUser);
+// ==> Rota responsavel por atualizar usuário por Id 'User': (PUT) http://localhost:3333/api/v1/upDate
+router.put("/upDate/:id", auth, userController.ReturnUpDate);
+
+// ==> Rota responsavel por excluir usuário por Id 'User': (DELETE) http://localhost:3333/api/v1/remove
+router.delete("/remove/:id", auth, userController.ReturnRemov);
 
 module.exports = router;

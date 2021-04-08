@@ -86,30 +86,62 @@ exports.returnUserId = async (req, res) => {
 };
 
 // ==> Rota responsavel por atualizar usuário por Id
-exports.updtUser = async (req, res) => {
-  var user = new User();
-  //Primeiro - Procurar o ID
-  User.findById(req.params.user_id, function (error, user) {
-    if (error) res.status(401).json({ message: "Id inválido!" });
-  });
+exports.ReturnUpDate = async (req, res) => {
+  try {
+    //Primeiro - Procurar o ID
+    User.findById(req.params.id, function (error, user) {
+      if (error)
+        return res
+          .status(401)
+          .json({ message: "_Id não encontrado...: " + req.params.id });
 
-  //Segundo - Após achar atualiza os objetos
-  user.name = req.body.name;
-  user.email = req.body.email;
-  user.password = req.body.password;
-  user.phone = req.body.phone;
-  user.renav = req.body.renav;
-  user.plcar = req.body.plcar;
+      //Segundo - Após achar atualiza os objetos
+      user.name = req.body.name;
+      user.email = req.body.email;
+      user.password = req.body.password;
+      user.phone = req.body.phone;
+      user.renav = req.body.renav;
+      user.plcar = req.body.plcar;
 
-  //Terceiro - Persistir as propriedades no dados no banco
-  user.update(function (error) {
-    if (error)
-      res
-        .status(400)
-        .json({ message: "Error ao atualizar o usuário..: " + error });
+      //Terceiro - Persistir as propriedades no dados no banco
+      user.save(function (error) {
+        if (error)
+          return res
+            .status(401)
+            .json({ message: "Error ao atualizar o usuário..: " + error });
 
-    res
-      .status(201)
-      .json({ message: "Usuário(a) atualizado com sucesso!", user });
-  });
+        return res
+          .status(201)
+          .json({ message: "Usuário(a) atualizado com sucesso!", user });
+      });
+    });
+  } catch (error) {
+    return res.status(401).json({ message: "<<< Error >>> : " + error });
+  }
+};
+
+// ==> Rota responsavel por atualizar usuário por Id
+exports.ReturnRemov = async (req, res) => {
+  try {
+    //Primeiro - Procurar o ID
+    User.findById(req.params.id, function (error, user) {
+      if (error)
+        return res
+          .status(401)
+          .json({ message: "_Id não encontrado...: " + req.params.id });
+
+      user.remove(function (error) {
+        if (error)
+          return res
+            .status(401)
+            .json({ message: "Error ao excluir o usuário..: " + error });
+
+        return res
+          .status(201)
+          .json({ message: "Usuário(a) excluido com sucesso!", user });
+      });
+    });
+  } catch (error) {
+    return res.status(401).json({ message: "<<< Error >>> : " + error });
+  }
 };
