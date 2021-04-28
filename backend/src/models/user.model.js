@@ -7,10 +7,10 @@
  */
 
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-const Schema = mongoose.Schema;
 
 // ==> Define a Collection (Tabela = 'users')
 const userSchema = new Schema(
@@ -19,6 +19,12 @@ const userSchema = new Schema(
     email: { type: String, maxlength: 30, required: true },
     password: { type: String, required: true },
     phone: { type: String, maxlength: 30, required: false },
+    type: { type: Number, default: 1 }, // 1-User, 2-GrandUSER, 3-HIPER-FOCKING-BIG-MORE-THAN-YOUR-MOM-USER
+    photo_profile: {
+      type: String,
+      default:
+        "https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg",
+    },
     renav: { type: String, maxlength: 30, required: false },
     plcar: { type: String, maxlength: 15, required: false },
     tokens: [

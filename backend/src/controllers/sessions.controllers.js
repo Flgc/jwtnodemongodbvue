@@ -263,6 +263,7 @@ module.exports = class Sessions {
 
         if (message.type === "chat") {
           const buffer = message.body;
+
           console.log(`Mensagem buffer: , ${buffer}`);
         }
       });
@@ -354,7 +355,7 @@ module.exports = class Sessions {
       return { result: "error", message: "NOTFOUND" };
     }
   } //getQrcode
-
+  //                         req, res, next
   static async sendText(sessionName, number, text) {
     var session = Sessions.getSession(sessionName);
     if (session) {
