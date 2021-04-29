@@ -138,12 +138,13 @@ module.exports = {
 
   async login(req, res) {
     const { email, senha } = req.body;
-    Workers.findOne({ email_usuario: email }, function (err, user) {
+    //Workers.findOne({ email_usuario: email }, function (err, user) {
+    Workers.findByCredentials({ email_usuario: email }, function (err, user) {
       if (err) {
         console.log(err);
         res.status(500).json({ error: err });
       } else if (!user) {
-        res.status(200).json({ status: 2, error: "Access denied" });
+        res.status(400).json({ status: 2, error: "Access denied" });
       } else {
         user.isCorrectPassword(senha, async function (err, same) {
           if (err) {

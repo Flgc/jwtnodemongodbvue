@@ -11,7 +11,9 @@ const api = express.Router();
 const jwtPasser = require("../../middlewares/verify");
 
 api.use("/login", require("./rest/login.route"));
-api.use("/", jwtPasser, require("./rest/rest.route"));
+//api.use("/", jwtPasser, require("./rest/rest.route"));
+//Rota do Usuário do sistema
+api.use("/", require("./rest/rest.route"));
 api.use("/whatsapp", require("./venom/venom.route"));
 
 module.exports = api;

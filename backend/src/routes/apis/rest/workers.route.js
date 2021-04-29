@@ -2,7 +2,7 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
  * file: src/routes/apis/rest/works.route.js
- * Description: Api com as rotas Works
+ * Description: Api com as rotas Works (Usuários do sistema)
  * Data: 27/04/2021
  */
 
