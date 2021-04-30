@@ -138,8 +138,7 @@ module.exports = {
 
   async login(req, res) {
     const { email, senha } = req.body;
-    //Workers.findOne({ email_usuario: email }, function (err, user) {
-    Workers.findByCredentials({ email_usuario: email }, function (err, user) {
+    Workers.findOne({ email_usuario: email }, function (err, user) {
       if (err) {
         console.log(err);
         res.status(500).json({ error: err });

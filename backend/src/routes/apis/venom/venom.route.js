@@ -15,25 +15,44 @@ const trustID = require("../../../middlewares/idPasser");
 
 Router.get("/qrcode", trustID, Venom.qrCode); // /qrcode?id=1
 
-Router.get("/sessions", jwtPasser, Venom.getMax); // []
-Router.get("/sessions.details/:id", jwtPasser, Venom.verifySession); // sessions.details/1
-Router.post("/sessions", jwtPasser, trustID_SESSION, Venom.initializeSession); // /sessions?id=1
-Router.delete("/sessions", jwtPasser, trustID, Venom.closeSession); // /sessions?id=1
+Router.get("/sessions", jwtPasser, Venom.getMax); // ok
+/* http://localhost:3333/api/whatsapp/sessions */
 
-Router.get("/chats", jwtPasser, trustID, Venom.receberChatsNovos); // /?id=1
+Router.get("/sessions.details/:id", jwtPasser, Venom.verifySession); // ok
+/* http://localhost:3333/api/whatsapp/sessions.details/2 */
+
+Router.post("/sessions", jwtPasser, trustID_SESSION, Venom.initializeSession); // ok
+/* http://localhost:3333/api/whatsapp/sessions?id=2 */
+
+Router.delete("/sessions", jwtPasser, trustID, Venom.closeSession); // ok
+/* http://localhost:3333/api/whatsapp/sessions?id=1 */
+
+Router.get("/chats", jwtPasser, trustID, Venom.receberChatsNovos); // ok
 Router.get(
   "/chats/:number",
   jwtPasser,
   trustID,
   Venom.todosAsMensagensDoNumero
-); // /558796574896id=1&includeMe=true
+); // http://localhost:3333/api/whatsapp//chats/21998535530?id=2&includeMe=true
 
-Router.get("/valid/:number", jwtPasser, trustID, Venom.verificarNumero); // /558796574896?id=1
+Router.get("/valid/:number", jwtPasser, trustID, Venom.verificarNumero); //ok
+/* http://localhost:3333/api/whatsapp/valid/5521998535530?id=2 */
 
-Router.get("/device", jwtPasser, trustID, Venom.inputDeviceInfo); // /device?id=1
-Router.get("/device.battery", jwtPasser, Venom.nivelBateria); //  /device/battery?id=1
+Router.get("/device", jwtPasser, trustID, Venom.inputDeviceInfo); //ok
+/* http://localhost:3333/api/whatsapp/device?id=2  */
 
-Router.post("/message", jwtPasser, trustID, Venom.enviarMensagens); // /mensagem?id=1 \body {"numbers": "558796574896, 558796574896", "messages": "Oi/:end:/Teste"}
+Router.get("/device.battery", jwtPasser, Venom.nivelBateria); // ok
+/* http://localhost:3333/api/whatsapp/device.battery?id=2 */
+
+Router.post("/message", jwtPasser, trustID, Venom.enviarMensagens); //ok
+/* 
+      Post ==> http://localhost:3333/api/whatsapp/message?id=2
+      body = {
+       "worker": "5521998535530",
+       "numbers": "5521999520191, 5521983498213",
+       "messages": "Oi para o primeiro número/:end:/Oi para o segundo número"
+     } 
+*/
 
 Router.post("/message.doc", jwtPasser, trustID, Venom.enviarArquivoBase64); // /mensagem.doc?id=1 \body {"numbers": "558796574896, 558796574896", "base64": "foo bar", "name":"name.ext", "message": "caption"}
 
