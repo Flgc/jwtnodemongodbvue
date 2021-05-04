@@ -123,7 +123,7 @@ export default function Dashboard() {
       const response = await api.post('/api/clients', data);
       console.log(response);
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         setChatId('');
         setFullName('');
         setProfileUrl('');
@@ -131,7 +131,7 @@ export default function Dashboard() {
         return alert('Cadastro efetuado!');
       }
     } catch (e) {
-      if (e == 'Error: Request failed with status code 400') {
+      if (e === 'Error: Request failed with status code 400') {
         alert('O cadastro já existe!');
       } else {
         console.log(e);

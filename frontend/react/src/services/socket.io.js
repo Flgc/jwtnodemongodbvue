@@ -11,11 +11,11 @@ import openSocket from 'socket.io-client/dist/socket.io';
 
 let port = window.location.port;
 
-if (window.location.protocol == 'https:' && port == '') {
+if (window.location.protocol === 'https:' && port === '') {
   port = '443';
 }
 
-if (window.location.protocol == 'http:' && port == '') {
+if (window.location.protocol === 'http:' && port === '') {
   port = '80';
 }
 

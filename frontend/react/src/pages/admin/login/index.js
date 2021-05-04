@@ -102,7 +102,7 @@ export default function SignInSide() {
     event.preventDefault();
     try {
       const response = await api.post('/api/login', { email, senha });
-      if (response.data.status == 1) {
+      if (response.data.status === 1) {
         login(response.data.token);
         setIdUsuario(response.data.user._id);
         setProfileLinkUsuario(response.data.user.foto_perfil);

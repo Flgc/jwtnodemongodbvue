@@ -115,15 +115,28 @@ export default function Dashboard() {
 
   const { idUsuario } = useParams();
 
-  useEffect(async () => {
-    let response = await api.get('/api/clients/details/' + idUsuario);
-    let client = response.data.Client[0];
-    client.chatId = new Number(client.chatId.replace('@c.us', ''));
+  // useEffect(async () => {
+  //   let response = await api.get('/api/clients/details/' + idUsuario);
+  //   let client = response.data.Client[0];
+  //   client.chatId = new Number(client.chatId.replace('@c.us', ''));
 
-    setFullName(client.fullName);
-    setProfileUrl(client.profileUrl);
-    setChatId(client.chatId);
-  }, []);
+  //   setFullName(client.fullName);
+  //   setProfileUrl(client.profileUrl);
+  //   setChatId(client.chatId);
+  // }, []);
+
+  useEffect(() => {
+    async function infoClie() {
+      let response = await api.get('/api/clients/details/' + idUsuario);
+      let client = response.data.Client[0];
+      client.chatId = Number(client.chatId.replace('@c.us', ''));
+
+      setFullName(client.fullName);
+      setProfileUrl(client.profileUrl);
+      setChatId(client.chatId);
+    }
+    infoClie();
+  }, [idUsuario]);
 
   async function handleSubmit() {
     try {
@@ -136,7 +149,7 @@ export default function Dashboard() {
       const response = await api.put('/api/clients/' + idUsuario, data);
       console.log(response);
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         setChatId('');
         setFullName('');
         setProfileUrl('');
@@ -188,6 +201,7 @@ export default function Dashboard() {
                   <Grid>
                     <img
                       src={profileUrl}
+                      alt=""
                       style={{
                         maxHeight: '100px',
                         maxWidth: '100px',

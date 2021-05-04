@@ -279,25 +279,49 @@ export default function WhatsApp() {
     });
   }, []);
 
+  // useEffect(() => {
+  //   io.on('newMessage', (e) => {
+  //     if (e.from === contact.chatId) {
+  //       //getMessages();
+  //       if (contact.chatId !== '0') {
+  //         const response = api.get('/api/messages/' + contact.chatId);
+  //         setMessagesList(response.data.Message);
+  //       }
+  //     }
+  //     return uptodate();
+  //   });
+
+  //   io.on('newFile', (e) => {
+  //     if (e.from === contact.chatId) {
+  //       //getMessages();
+  //       if (contact.chatId !== '0') {
+  //         const response = api.get('/api/messages/' + contact.chatId);
+  //         setMessagesList(response.data.Message);
+  //       }
+  //       setOpen(false);
+  //     }
+  //     return uptodate();
+  //   });
+  // }, [contact]);
+
   useEffect(() => {
+    async function getMessages() {
+      if (contact.chatId !== '0') {
+        const response = await api.get('/api/messages/' + contact.chatId);
+        setMessagesList(response.data.Message);
+      }
+    }
+
     io.on('newMessage', (e) => {
       if (e.from === contact.chatId) {
-        //getMessages();
-        if (contact.chatId !== '0') {
-          const response = api.get('/api/messages/' + contact.chatId);
-          setMessagesList(response.data.Message);
-        }
+        getMessages();
       }
       return uptodate();
     });
 
     io.on('newFile', (e) => {
       if (e.from === contact.chatId) {
-        //getMessages();
-        if (contact.chatId !== '0') {
-          const response = api.get('/api/messages/' + contact.chatId);
-          setMessagesList(response.data.Message);
-        }
+        getMessages();
         setOpen(false);
       }
       return uptodate();
@@ -324,12 +348,13 @@ export default function WhatsApp() {
     setList(response.data.Client);
   }
 
-  //  async function getMessages() {
-  //    if (contact.chatId !== '0') {
-  //      const response = await api.get('/api/messages/' + contact.chatId);
-  //      setMessagesList(response.data.Message);
-  //    }
-  //  }
+  // async function getMessages() {
+  //   if (contact.chatId !== '0') {
+  //     const response = await api.get('/api/messages/' + contact.chatId);
+  //     setMessagesList(response.data.Message);
+  //   }
+  // }
+
   function getMessages() {
     if (contact.chatId !== '0') {
       const response = api.get('/api/messages/' + contact.chatId);

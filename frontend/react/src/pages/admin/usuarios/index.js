@@ -28,7 +28,7 @@ import Copyright from '../../../components/footer';
 import { Grid } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import * as libs from '../../../services/auth';
+//import * as libs from '../../../services/auth';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -142,15 +142,20 @@ export default function UsuariosListagem() {
     switch (inAttendace) {
       case true:
         return 'Finalizar atendimento';
-        break;
-
       default:
         return 'Atender';
-        break;
     }
   }
 
-  useEffect(loadUsuarios, []);
+  // useEffect(loadUsuarios, []);
+
+  useEffect(() => {
+    async function loadUsuarios() {
+      const response = await api.get('/api/clients');
+      setUsuarios(response.data.Clients);
+    }
+    loadUsuarios();
+  }, []);
 
   async function loadUsuarios() {
     const response = await api.get('/api/clients');
@@ -184,7 +189,7 @@ export default function UsuariosListagem() {
             <Button
               onClick={async () => {
                 try {
-                  const response = await api.delete('/api/clients/' + row._id);
+                  //const response = await api.delete('/api/clients/' + row._id);
                   handleClose();
                   loadUsuarios();
                   loadUsuarios();
@@ -210,7 +215,7 @@ export default function UsuariosListagem() {
             />
           </TableCell>
           <TableCell align="center">
-            {new String(row.chatId).replace('@c.us', '')}
+            {String(row.chatId).replace('@c.us', '')}
           </TableCell>
 
           <TableCell align="center">{`${new Date(
