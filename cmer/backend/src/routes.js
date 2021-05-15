@@ -8,9 +8,12 @@
 
 const express = require('express');
 const routes = express.Router();
-const User = require('./controllers/user.controllers');
+const Users = require('./controllers/user.controllers');
 
-routes.get('/', User.index);
-routes.post('/api/user', User.registerNewUser);
+// Users Routes
+routes.get('/api/users', Users.index);
+routes.post('/api/users', Users.registerNewUser);
+routes.get('/api/users.all', Users.returnAllUser);
+routes.get('/api/users.details/:_id', Users.returnUserId);
 
 module.exports = routes;

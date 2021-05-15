@@ -32,3 +32,21 @@ exports.registerNewUser = async (req, res) => {
     res.status(400).json({ err });
   }
 };
+
+// Return all users
+exports.returnAllUser = async (req, res) => {
+  User.find(function (err, user) {
+    if (err) res.status(401).json({ message: 'Error listing users: ' + err });
+
+    res.json(user);
+  });
+};
+
+// Users return Id:
+exports.returnUserId = async (req, res) => {
+  User.findById(req.params._id, function (error, user) {
+    if (error) res.status(401).json({ message: 'Users id invalid! ' + error });
+
+    res.json(user);
+  });
+};
