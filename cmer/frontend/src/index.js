@@ -2,7 +2,7 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
  * file: src/index.js
- * Description:
+ * Description: Pagina inicial padrão Album layout material-ui.com/pt/getting-started/templates/album/
  * Data: 17/05/2021
  */
 

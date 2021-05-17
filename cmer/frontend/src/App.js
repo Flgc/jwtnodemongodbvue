@@ -7,12 +7,16 @@
  * Data: 17/05/2021
  */
 
+import React from 'react';
+import Inicio from './pages/client/painel';
+
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <h1>APP</h1>
-      </header>
+      </header> */}
+      <Inicio />
     </div>
   );
 }
