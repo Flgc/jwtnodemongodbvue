@@ -1,22 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+/**
+ * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
+ * mecanicaBot
+ *
+ * file: App.js
+ * Description: Arquivo principal do FrontEnd
+ * Data: 17/05/2021
+ */
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>APP</h1>
       </header>
     </div>
   );
