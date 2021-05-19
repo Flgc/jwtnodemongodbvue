@@ -7,6 +7,7 @@
  * Data: 17/05/2021
  */
 
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
@@ -21,6 +22,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import apiConnecting from '../../../services/apiConnecting';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,6 +54,40 @@ const useStyles = makeStyles((theme) => ({
 export default function UsersInsert() {
   const classes = useStyles();
 
+  const [nome_form, setNome] = useState('');
+  const [email_form, setEmail] = useState('');
+  const [tipo_form, setTipo] = useState('');
+  const [senha_form, setSenha] = useState('');
+  const [foto_form, setFoto] = useState('');
+
+  async function handleSubmit() {
+    /* Receive all form variables */
+    const data = {
+      name_user: nome_form,
+      email_user: email_form,
+      type_user: tipo_form,
+      password_user: senha_form,
+      photo_profile_user: foto_form,
+    };
+
+    if (
+      nome_form !== '' &&
+      email_form !== '' &&
+      tipo_form !== '' &&
+      senha_form !== ''
+    ) {
+      const res = await apiConnecting.post('/api/users', data);
+
+      if (res.status === 201) {
+        window.location.href = '/admin/users';
+      } else {
+        alert('Erro ao cadastrar o usuário!s');
+      }
+    } else {
+      alert('Por favor, preencha todos os dados obrigatório!');
+    }
+  }
+
   return (
     <div className={classes.root}>
       {/**/}
@@ -73,6 +110,8 @@ export default function UsersInsert() {
                       label="Nome Completo"
                       fullWidth
                       autoComplete="nome"
+                      value={nome_form}
+                      onChange={(e) => setNome(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -83,6 +122,8 @@ export default function UsersInsert() {
                       label="Email"
                       fullWidth
                       autoComplete="email"
+                      value={email_form}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -91,8 +132,8 @@ export default function UsersInsert() {
                       <Select
                         labelId="labeltipo"
                         id="tipo"
-                        // value={age}
-                        // onChange={handleChange}
+                        value={tipo_form}
+                        onChange={(e) => setTipo(e.target.value)}
                       >
                         <MenuItem value={1}>Administrador</MenuItem>
                         <MenuItem value={2}>Funcionário</MenuItem>
@@ -108,17 +149,31 @@ export default function UsersInsert() {
                       label="senha"
                       fullWidth
                       autoComplete="senha"
+                      value={senha_form}
+                      onChange={(e) => setSenha(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12} sm={12}>
                     <TextField
-                      required
+                      //required
                       id="foto"
                       name="foto"
                       label="foto"
                       fullWidth
                       autoComplete="foto"
+                      value={foto_form}
+                      onChange={(e) => setFoto(e.target.value)}
                     />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12}>
+                    <Button
+                      variant="contained"
+                      onClick={handleSubmit}
+                      color="secondary"
+                    >
+                      Salvar
+                    </Button>
                   </Grid>
                 </Grid>
               </Paper>
