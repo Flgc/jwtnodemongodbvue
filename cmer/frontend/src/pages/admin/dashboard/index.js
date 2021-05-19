@@ -48,7 +48,7 @@ export default function Dashboard() {
     <div className={classes.root}>
       {/**/}
       {/* Desestructured Menu Layout */}
-      <MenuAdmin />
+      <MenuAdmin title={'DASHBOARD'} />
       {/**/}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
