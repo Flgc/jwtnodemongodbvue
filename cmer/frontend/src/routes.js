@@ -55,7 +55,7 @@ export default function Routes() {
         <Route path="/admin/users" exact component={Users} />
         <Route path="/admin/users/include" exact component={UsersInsert} />
         <Route
-          path="/admin/users/update/:idClient"
+          path="/admin/users/update/:userId"
           exact
           component={UsersUpdate}
         />

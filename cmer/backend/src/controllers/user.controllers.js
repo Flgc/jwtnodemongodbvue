@@ -9,7 +9,7 @@
 const User = require('../models/user.model');
 
 exports.index = async (req, res) => {
-  res.status(201).json({ message: 'Hello World from User Controller' });
+  res.status(200).json({ message: 'Hello World from User Controller' });
 };
 
 exports.registerNewUser = async (req, res) => {
