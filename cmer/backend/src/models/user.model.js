@@ -22,11 +22,6 @@ const userSchema = new Schema(
       default:
         'https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg',
     },
-    tokens: [
-      {
-        token: { type: String },
-      },
-    ],
   },
   {
     timestamps: true,
@@ -34,7 +29,7 @@ const userSchema = new Schema(
   }
 );
 
-// ==> password hash befour saved user model
+// ==> password hash before saved user model
 userSchema.pre('save', async function (next) {
   const user = this;
   if (user.isModified('password_user')) {
@@ -62,26 +57,6 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-// ==> search for email and password
-userSchema.statics.findByCredentials = async (email_user, password_user) => {
-  const user = await User.findOne({ email_user });
-
-  if (!user) {
-    throw new Error({ error: 'Invalid login!' });
-  }
-
-  // ==> comparing with database if password is correct
-  const isPasswordMatch = await bcrypt.compare(
-    password_user,
-    user.password_user
-  );
-
-  if (!isPasswordMatch) {
-    throw new Error({ error: 'Invalid login!' });
-  }
-  return user;
-};
-
 // ==> Users Update
 userSchema.statics.findOneAndUpdate = async (
   name_user,
@@ -94,6 +69,17 @@ userSchema.statics.findOneAndUpdate = async (
     throw new Error({ error: 'Invalid user!' });
   }
   return user;
+};
+
+// ==> Is the password correct?
+userSchema.methods.isCorrectPassword = function (password, callback) {
+  bcrypt.compare(password, this.password_user, function (err, same) {
+    if (err) {
+      callback(err);
+    } else {
+      callback(err, same);
+    }
+  });
 };
 
 const Users = mongoose.model('Users', userSchema);

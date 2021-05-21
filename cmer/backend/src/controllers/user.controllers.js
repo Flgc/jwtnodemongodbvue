@@ -7,6 +7,8 @@
  */
 
 const User = require('../models/user.model');
+const jwt = require('jsonwebtoken');
+const secret = 'mysecret';
 
 exports.index = async (req, res) => {
   res.status(200).json({ message: 'Hello World from User Controller' });
@@ -23,11 +25,10 @@ exports.registerNewUser = async (req, res) => {
     const newUser = new User(req.body);
     const user = await newUser.save();
 
-    // ==> Generating token
-    const token = await newUser.generateAuthToken();
     res
       .status(201)
-      .json({ message: 'User register successfully! ', user, token });
+      //.json({ message: 'User register successfully! ', user, token });
+      .json({ message: 'User register successfully! ', user });
   } catch (err) {
     res.status(400).json({ err });
   }
@@ -96,4 +97,34 @@ exports.updateUser = async (req, res) => {
   } catch (error) {
     return res.status(401).json({ message: '<<< Error >>> : ' + error });
   }
+};
+
+// Users login
+exports.loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  User.findOne({ email_user: email }, function (err, user) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: err });
+    } else if (!user) {
+      res.status(401).json({ status: 2, error: 'Access denied' });
+    } else {
+      user.isCorrectPassword(password, async function (err, same) {
+        if (err) {
+          res.status(500).json({ error: err });
+        } else if (!same) {
+          res.status(401).json({ status: 2, error: 'Access denied' });
+        } else {
+          const payload = { email };
+          const token = jwt.sign(payload, secret, {
+            expiresIn: '24h',
+          });
+          res.cookie('token', token);
+          res
+            .status(200)
+            .json({ status: 1, auth: true, token: token, user: user });
+        }
+      });
+    }
+  });
 };

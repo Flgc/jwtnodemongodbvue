@@ -16,6 +16,7 @@ import WhatsAppClient from './pages/admin/whatsappClient';
 import WhatsAppClientInsert from './pages/admin/whatsappClient/whatsappClient.insert';
 import WhatsAppClientUpdate from './pages/admin/whatsappClient/whatsappClient.update';
 
+import Login from './pages/admin/login';
 import Users from './pages/admin/users';
 import UsersInsert from './pages/admin/users/users.insert';
 import UsersUpdate from './pages/admin/users/users.update';
@@ -38,6 +39,7 @@ export default function Routes() {
 
         {/* Admin Route*/}
         <Route path="/admin" exact component={Dashboard} />
+        <Route path="/admin/login" exact component={Login} />
 
         <Route path="/admin/whatsappclient" exact component={WhatsAppClient} />
         <Route

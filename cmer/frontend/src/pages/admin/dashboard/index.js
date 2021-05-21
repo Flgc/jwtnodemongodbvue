@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import MenuAdmin from '../../../components/menu-admin';
 import ImgAdmin from '../../../assets/img/admin.png';
 import Footer from '../../../components/footer-admin';
-import Paper from '@material-ui/core/Paper';
+//import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
   root: {

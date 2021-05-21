@@ -17,5 +17,6 @@ routes.get('/api/users.all', Users.returnAllUser);
 routes.get('/api/users.details/:_id', Users.returnUserId);
 routes.delete('/api/users/:_id', Users.deleteUserId);
 routes.put('/api/users/:_id', Users.updateUser);
+routes.post('/api/users/login', Users.loginUser);
 
 module.exports = routes;
