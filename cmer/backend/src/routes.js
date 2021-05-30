@@ -18,5 +18,6 @@ routes.get('/api/users.details/:_id', Users.returnUserId);
 routes.delete('/api/users/:_id', Users.deleteUserId);
 routes.put('/api/users/:_id', Users.updateUser);
 routes.post('/api/users/login', Users.loginUser);
+routes.post('/api/users/checktoken', Users.checkToken);
 
 module.exports = routes;

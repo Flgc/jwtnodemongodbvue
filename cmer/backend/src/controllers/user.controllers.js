@@ -134,3 +134,29 @@ exports.loginUser = async (req, res) => {
     }
   });
 };
+
+// Users checktoken
+exports.checkToken = async (req, res) => {
+  const token =
+    req.body.token ||
+    req.query.token ||
+    req.cookies.token ||
+    req.headers['x-access-token'];
+
+  if (!token) {
+    res.json({ status: 401, msg: 'Não autorizado: Token inexistente!' });
+  } else {
+    jwt.verify(token, secret, function (err, decoded) {
+      if (err) {
+        res.json({ status: 401, msg: 'Não autorizado: Token inválido!' });
+      } else {
+        req.json({ status: 200 });
+      }
+    });
+  }
+};
+
+// ==> Retorna os dados do usuário logado através do token armazenado na base de dados
+exports.returnUserProfile = async (req, res) => {
+  await res.json(req.userData);
+};
