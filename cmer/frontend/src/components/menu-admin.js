@@ -21,6 +21,8 @@ import Divider from '@material-ui/core/Divider';
 import { mainListItems, secondaryListItems } from './list-menu-admin';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { getNameUser } from '../services/auth';
+import logoSistema from '../assets/img/logo-empresa-top.png';
 
 const drawerWidth = 240;
 
@@ -123,16 +125,11 @@ export default function MenuAdmin({ title }) {
             className={classes.title}
           >
             {/* Name Menu */}
-
             {title}
-
-            {/**/}
           </Typography>
-          {/* <IconButton color="inherit">
-        <Badge badgeContent={4} color="secondary">
-          <NotificationsIcon />
-        </Badge>
-      </IconButton> */}
+
+          {/* User Name Blue Bar */}
+          {getNameUser}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -143,6 +140,11 @@ export default function MenuAdmin({ title }) {
         open={open}
       >
         <div className={classes.toolbarIcon}>
+          <img
+            styke={{ width: 150, height: 50 }}
+            src={logoSistema}
+            alt="Logo sistema"
+          />
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>

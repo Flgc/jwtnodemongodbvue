@@ -106,10 +106,12 @@ exports.loginUser = async (req, res) => {
   // console.log(req.body);
   // console.log(email, password);
 
-  User.findOne({ email_user: email }, function (err, user) {
+  User.findOne({ email_user: email, type_user: 1 }, function (err, user) {
     if (err) {
       console.log(err);
-      res.status(200).json({ error: err });
+      res
+        .status(200)
+        .json({ error: 'Erro no servidor. Por favor, tente novamente!' });
     } else if (!user) {
       res.status(200).json({ status: 2, error: 'Email ou senha incorreto!' });
     } else {
@@ -130,8 +132,8 @@ exports.loginUser = async (req, res) => {
             status: 1,
             auth: true,
             token: token,
-            user_id: user.user_id,
-            user_name: user.user_name,
+            user_id: user._id,
+            user_name: user.name_user,
           });
         }
       });

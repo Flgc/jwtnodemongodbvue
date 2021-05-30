@@ -67,19 +67,19 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setSenha] = useState('');
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const data = { email: email, password: password };
 
     //console.log(data);
 
-    ApiConnecting.post('/api/users/login', data).then((res) => {
+    await ApiConnecting.post('/api/users/login', data).then((res) => {
       if (res.status === 200) {
         if (res.data.status === 1) {
           // Received information of localStorage
           login(res.data.token);
-          setIdUser(res.data.id_client);
+          setIdUser(res.data.user_id);
           setNameUser(res.data.user_name);
           window.location.href = '/admin';
         } else if (res.data.status === 2) {
