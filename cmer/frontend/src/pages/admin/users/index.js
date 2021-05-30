@@ -29,6 +29,8 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Chip from '@material-ui/core/Chip';
 
+import { getNameType, getNameTypeLabel } from '../../../functions/static_data';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -121,21 +123,13 @@ export default function UsersList() {
                                 {row.email_user}
                               </TableCell>
                               <TableCell align="center">
-                                {row.type_user === 1 ? (
-                                  <Chip
-                                    variant="outlined"
-                                    size="small"
-                                    label="Administrador"
-                                    color="secondary"
-                                  />
-                                ) : (
-                                  <Chip
-                                    variant="outlined"
-                                    size="small"
-                                    label="Funcionário"
-                                    color="primary "
-                                  />
-                                )}
+                                <Chip
+                                  // User Type Menu
+                                  variant="outlined"
+                                  size="small"
+                                  label={getNameType(row.type_user)}
+                                  color={getNameTypeLabel(row.type_user)}
+                                />
                               </TableCell>
                               <TableCell align="right">
                                 {new Date(row.createdAt).toLocaleString(

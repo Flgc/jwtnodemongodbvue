@@ -24,12 +24,9 @@ export const setIdUser = (id) => localStorage.setItem(ID_USER, id);
 export const getIdUser = () => sessionStorage.getItem(ID_USER);
 
 export const setNameUser = (nome) => localStorage.setItem(NAME_USER, nome);
-// export const getNameUser = () => {
-//   localStorage.getItem(NAME_USER);
-// };
 export const getNameUser = localStorage.getItem('&name-user');
 
 export const setTypeUser = (tipo) => localStorage.setItem(USER_TYPE, tipo);
-export const getTypeUser = () => sessionStorage.getItem(USER_TYPE);
+export const getTypeUser = localStorage.getItem('&user-type');
 
 export const getToken = () => localStorage.getItem(TOKEN_KEY);

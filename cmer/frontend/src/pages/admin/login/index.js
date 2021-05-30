@@ -26,7 +26,7 @@ import {
   login,
   setIdUser,
   setNameUser,
-  //  setTypeUser,
+  setTypeUser,
 } from '../../../services/auth';
 
 function Copyright() {
@@ -81,6 +81,7 @@ export default function SignIn() {
           login(res.data.token);
           setIdUser(res.data.user_id);
           setNameUser(res.data.user_name);
+          setTypeUser(res.data.user_type);
           window.location.href = '/admin';
         } else if (res.data.status === 2) {
           alert(res.data.error);

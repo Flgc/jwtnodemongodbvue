@@ -134,6 +134,7 @@ exports.loginUser = async (req, res) => {
             token: token,
             user_id: user._id,
             user_name: user.name_user,
+            user_type: user.type_user,
           });
         }
       });
