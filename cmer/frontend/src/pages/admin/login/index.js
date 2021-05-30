@@ -82,6 +82,8 @@ export default function SignIn() {
           setIdUser(res.data.id_client);
           setNameUser(res.data.user_name);
           window.location.href = '/admin';
+        } else if (res.data.status === 2) {
+          alert(res.data.error);
         }
       } else {
         alert('Erro no servidor');

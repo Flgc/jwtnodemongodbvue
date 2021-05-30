@@ -109,15 +109,17 @@ exports.loginUser = async (req, res) => {
   User.findOne({ email_user: email }, function (err, user) {
     if (err) {
       console.log(err);
-      res.status(500).json({ error: err });
+      res.status(200).json({ error: err });
     } else if (!user) {
-      res.status(401).json({ status: 2, error: 'Access denied' });
+      res.status(200).json({ status: 2, error: 'Email ou senha incorreto!' });
     } else {
       user.isCorrectPassword(password, async function (err, same) {
         if (err) {
-          res.status(500).json({ error: err });
+          res.status(200).json({ error: err });
         } else if (!same) {
-          res.status(401).json({ status: 2, error: 'Access denied' });
+          res
+            .status(200)
+            .json({ status: 2, error: 'Email ou senha incorreto!' });
         } else {
           const payload = { email };
           const token = jwt.sign(payload, secret, {
