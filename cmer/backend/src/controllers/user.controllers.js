@@ -125,10 +125,14 @@ exports.loginUser = async (req, res) => {
           const token = jwt.sign(payload, secret, {
             expiresIn: '24h',
           });
-          res.cookie('token', token);
-          res
-            .status(200)
-            .json({ status: 1, auth: true, token: token, user: user });
+          res.cookie('token', token, { httpOnly: true });
+          res.status(200).json({
+            status: 1,
+            auth: true,
+            token: token,
+            user_id: user.user_id,
+            user_name: user.user_name,
+          });
         }
       });
     }
@@ -154,6 +158,17 @@ exports.checkToken = async (req, res) => {
       }
     });
   }
+};
+
+// Token destroy
+exports.destroyToken = async (req, res) => {
+  const token = req.headers.token;
+  if (token) {
+    res.cookie('token', null, { httpOnly: true });
+  } else {
+    res.status(401).send('Logout não autorizado!');
+  }
+  res.send('Sessão finalizada com sucesso!');
 };
 
 // ==> Retorna os dados do usuário logado através do token armazenado na base de dados
