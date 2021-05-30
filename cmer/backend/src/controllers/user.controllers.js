@@ -102,6 +102,10 @@ exports.updateUser = async (req, res) => {
 // Users login
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
+
+  // console.log(req.body);
+  // console.log(email, password);
+
   User.findOne({ email_user: email }, function (err, user) {
     if (err) {
       console.log(err);

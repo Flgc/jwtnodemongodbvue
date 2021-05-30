@@ -21,7 +21,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import api from '../../../services/apiConnecting';
+import ApiConnecting from '../../../services/apiConnecting';
 import {
   login,
   setIdUser,
@@ -65,31 +65,28 @@ const useStyles = makeStyles((theme) => ({
 export default function SignIn() {
   const classes = useStyles();
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setSenha] = useState('');
 
-  async function handleSubmit() {
-    await api
-      .post('/api/users/login', {
-        email: email,
-        senha: senha,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          if (res.data.status === 1) {
-            // Received information of localStorage
-            login(res.data.token);
-            setIdUser(res.data.id_client);
-            setNameUser(res.data.user_name);
-            //
-            window.location.href = '/admin';
-            //
-          } else if (res.data.status === 2) {
-            alert('Atenção! => ' + res.data.error);
-          }
-        } else {
-          alert('Erro no servidor');
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const data = { email: email, password: password };
+
+    //console.log(data);
+
+    ApiConnecting.post('/api/users/login', data).then((res) => {
+      if (res.status === 200) {
+        if (res.data.status === 1) {
+          // Received information of localStorage
+          login(res.data.token);
+          setIdUser(res.data.id_client);
+          setNameUser(res.data.user_name);
+          window.location.href = '/admin';
         }
-      });
+      } else {
+        alert('Erro no servidor');
+      }
+    });
   }
 
   return (
@@ -128,7 +125,7 @@ export default function SignIn() {
           type="password"
           id="password"
           autoComplete="current-password"
-          value={senha}
+          value={password}
           //Enable variable in form
           onChange={(e) => {
             setSenha(e.target.value);

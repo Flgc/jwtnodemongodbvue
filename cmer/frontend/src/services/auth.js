@@ -15,10 +15,10 @@ export const USER_TYPE = '&user-type';
 export const login = (token) => {
   localStorage.setItem(TOKEN_KEY, token);
 };
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
 export const logout = () => {
   localStorage.clear();
 };
+export const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 export const setIdUser = (id) => localStorage.setItem(ID_USER, id);
 export const getIdUser = () => sessionStorage.getItem(ID_USER);

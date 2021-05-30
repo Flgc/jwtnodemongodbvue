@@ -11,12 +11,12 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 // Admin Imports
 import Dashboard from './pages/admin/dashboard';
+import Login from './pages/admin/login';
 
 import WhatsAppClient from './pages/admin/whatsappClient';
 import WhatsAppClientInsert from './pages/admin/whatsappClient/whatsappClient.insert';
 import WhatsAppClientUpdate from './pages/admin/whatsappClient/whatsappClient.update';
 
-import Login from './pages/admin/login';
 import Users from './pages/admin/users';
 import UsersInsert from './pages/admin/users/users.insert';
 import UsersUpdate from './pages/admin/users/users.update';
