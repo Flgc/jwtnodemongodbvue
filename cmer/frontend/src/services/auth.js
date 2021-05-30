@@ -1,7 +1,7 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
- * file: src/services/apiConnecting.js
+ * file: src/services/auth.js
  * Description: Construtor do profile logado e autenticado
  * Data: 20/05/2021
  */
@@ -15,10 +15,10 @@ export const USER_TYPE = '&user-type';
 export const login = (token) => {
   localStorage.setItem(TOKEN_KEY, token);
 };
+
 export const logout = () => {
   localStorage.clear();
 };
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
 
 export const setIdUser = (id) => localStorage.setItem(ID_USER, id);
 export const getIdUser = () => sessionStorage.getItem(ID_USER);
@@ -28,3 +28,5 @@ export const getNameUser = () => sessionStorage.getItem(NAME_USER);
 
 export const setTypeUser = (tipo) => localStorage.setItem(USER_TYPE, tipo);
 export const getTypeUser = () => sessionStorage.getItem(USER_TYPE);
+
+export const getToken = () => localStorage.getItem(TOKEN_KEY);
