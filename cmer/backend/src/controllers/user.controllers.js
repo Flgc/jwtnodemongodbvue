@@ -106,7 +106,7 @@ exports.loginUser = async (req, res) => {
   // console.log(req.body);
   // console.log(email, password);
 
-  User.findOne({ email_user: email, type_user: 1 }, function (err, user) {
+  User.findOne({ email_user: email }, function (err, user) {
     if (err) {
       console.log(err);
       res
