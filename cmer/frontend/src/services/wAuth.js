@@ -9,7 +9,8 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import apiConnecting from './apiConnecting';
-import { login, logout, getToken } from './auth';
+import { logout, getToken } from './auth';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 export default function WAuth({ component: Component, ...rest }) {
   const [redirect, setRedirect] = useState(false);
@@ -30,11 +31,14 @@ export default function WAuth({ component: Component, ...rest }) {
         setRedirect(true);
       }
     }
-    verify();
+    //verify();
+
+    // Wait 1 second to view the upload
+    setTimeout(() => verify(), 1000);
   }, []);
 
   return loading ? (
-    'Carregando...'
+    <LinearProgress style={{ width: '50%', margin: '80px auto' }} />
   ) : (
     <Route
       {...rest}

@@ -28,6 +28,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Chip from '@material-ui/core/Chip';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { getNameType, getNameTypeLabel } from '../../../functions/static_data';
 
@@ -60,14 +61,19 @@ export default function UsersList() {
   const classes = useStyles();
 
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Get existing users from the database
   useEffect(() => {
     async function loadUsers() {
       const res = await apiConnecting.get('/api/users.all');
       setUsers(res.data);
+      setLoading(false);
     }
-    loadUsers();
+    //loadUsers();
+
+    // Wait 1 second to view the upload
+    setTimeout(() => loadUsers(), 100);
   }, []);
 
   async function handleDelete(id) {
@@ -97,68 +103,77 @@ export default function UsersList() {
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={12}>
                     <TableContainer component={Paper}>
-                      <Table
-                        className={classes.table}
-                        size="small"
-                        aria-label="a dense table"
-                      >
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Nome</TableCell>
-                            <TableCell align="left">Email</TableCell>
-                            <TableCell align="center">Tipo</TableCell>
-                            <TableCell align="center">
-                              Data de Cadastro
-                            </TableCell>
-                            <TableCell align="right">Opções</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {users.map((row) => (
-                            <TableRow key={row._id}>
-                              <TableCell component="th" scope="row">
-                                {row.name_user}
-                              </TableCell>
-                              <TableCell align="left">
-                                {row.email_user}
-                              </TableCell>
+                      {/* 
+                                  Progress bar for users loading 
+                      */}
+                      {loading ? (
+                        <LinearProgress
+                          style={{ width: '50%', margin: '20px auto' }}
+                        />
+                      ) : (
+                        <Table
+                          className={classes.table}
+                          size="small"
+                          aria-label="a dense table"
+                        >
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Nome</TableCell>
+                              <TableCell align="left">Email</TableCell>
+                              <TableCell align="center">Tipo</TableCell>
                               <TableCell align="center">
-                                <Chip
-                                  // User Type Menu
-                                  variant="outlined"
-                                  size="small"
-                                  label={getNameType(row.type_user)}
-                                  color={getNameTypeLabel(row.type_user)}
-                                />
+                                Data de Cadastro
                               </TableCell>
-                              <TableCell align="right">
-                                {new Date(row.createdAt).toLocaleString(
-                                  'pt-br'
-                                )}
-                              </TableCell>
-                              <TableCell align="right">
-                                <ButtonGroup
-                                  size="small"
-                                  aria-label="small outlined button group"
-                                >
-                                  <Button
-                                    color="primary"
-                                    href={'/admin/users/update/' + row._id}
-                                  >
-                                    Atualizar
-                                  </Button>
-                                  <Button
-                                    color="secondary"
-                                    onClick={() => handleDelete(row._id)}
-                                  >
-                                    Excluir
-                                  </Button>
-                                </ButtonGroup>
-                              </TableCell>
+                              <TableCell align="right">Opções</TableCell>
                             </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
+                          </TableHead>
+                          <TableBody>
+                            {users.map((row) => (
+                              <TableRow key={row._id}>
+                                <TableCell component="th" scope="row">
+                                  {row.name_user}
+                                </TableCell>
+                                <TableCell align="left">
+                                  {row.email_user}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <Chip
+                                    // User Type Menu
+                                    variant="outlined"
+                                    size="small"
+                                    label={getNameType(row.type_user)}
+                                    color={getNameTypeLabel(row.type_user)}
+                                  />
+                                </TableCell>
+                                <TableCell align="right">
+                                  {new Date(row.createdAt).toLocaleString(
+                                    'pt-br'
+                                  )}
+                                </TableCell>
+                                <TableCell align="right">
+                                  <ButtonGroup
+                                    size="small"
+                                    aria-label="small outlined button group"
+                                  >
+                                    <Button
+                                      color="primary"
+                                      href={'/admin/users/update/' + row._id}
+                                    >
+                                      Atualizar
+                                    </Button>
+                                    <Button
+                                      color="secondary"
+                                      onClick={() => handleDelete(row._id)}
+                                    >
+                                      Excluir
+                                    </Button>
+                                  </ButtonGroup>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      )}
                     </TableContainer>
                   </Grid>
                 </Grid>
