@@ -28,6 +28,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import ApiConnecting from '../../../services/apiConnecting';
 import {
@@ -75,15 +76,14 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setSenha] = useState('');
   const [showPassword, setShowPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    const data = { email: email, password: password };
-
-    //console.log(data);
-
-    await ApiConnecting.post('/api/users/login', data).then((res) => {
+  // Start login validation
+  async function handleSubmit() {
+    await ApiConnecting.post('/api/users/login', {
+      email: email,
+      password: password,
+    }).then((res) => {
       if (res.status === 200) {
         if (res.data.status === 1) {
           // Received information of localStorage
@@ -95,10 +95,18 @@ export default function SignIn() {
         } else if (res.data.status === 2) {
           alert(res.data.error);
         }
+        setLoading(false);
       } else {
         alert('Erro no servidor');
+        setLoading(false);
       }
     });
+  }
+
+  // login load time
+  function loadSubmit() {
+    setLoading(true);
+    setTimeout(() => handleSubmit(), 800);
   }
 
   return (
@@ -177,9 +185,10 @@ export default function SignIn() {
           color="primary"
           className={classes.submit}
           //start function
-          onClick={handleSubmit}
+          onClick={loadSubmit}
+          disabled={loading}
         >
-          Entrar
+          {loading ? <CircularProgress /> : 'Entrar'}
         </Button>
       </div>
       <Box mt={8}>
