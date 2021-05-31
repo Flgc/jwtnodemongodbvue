@@ -13,7 +13,6 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import MenuAdmin from '../../../components/menu-admin';
 import { getTypeUser } from '../../../services/auth';
-//import ImgAdmin from '../../../assets/img/admin.png';
 import Footer from '../../../components/footer-admin';
 //import Paper from '@material-ui/core/Paper';
 
@@ -74,7 +73,6 @@ export default function Dashboard() {
             {/**/}
             {/* Wallpaper */}
             {getDashBoard()}
-            {/* <img src={ImgAdmin} alt="" /> */}
             {/**/}
           </Grid>
           <Box pt={4}>

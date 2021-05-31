@@ -21,6 +21,14 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
 import ApiConnecting from '../../../services/apiConnecting';
 import {
   login,
@@ -66,6 +74,7 @@ export default function SignIn() {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setSenha] = useState('');
+  const [showPassword, setShowPassword] = useState('');
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -118,7 +127,7 @@ export default function SignIn() {
             setEmail(e.target.value);
           }}
         />
-        <TextField
+        {/* <TextField
           variant="outlined"
           margin="normal"
           required
@@ -133,7 +142,34 @@ export default function SignIn() {
           onChange={(e) => {
             setSenha(e.target.value);
           }}
-        />
+        /> */}
+
+        <FormControl
+          variant="outlined"
+          style={{ width: '100%', marginTop: 10 }}
+        >
+          <InputLabel htmlFor="passwordField">Digite sua senha *</InputLabel>
+          <OutlinedInput
+            id="passwordField"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => {
+              setSenha(e.target.value);
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={(e) => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={133}
+          />
+        </FormControl>
 
         <Button
           fullWidth
