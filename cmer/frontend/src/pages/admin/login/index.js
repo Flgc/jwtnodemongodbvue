@@ -106,7 +106,9 @@ export default function SignIn() {
   // login load time
   function loadSubmit() {
     setLoading(true);
-    setTimeout(() => handleSubmit(), 800);
+
+    // Wait 0,5 seconds to view the load
+    setTimeout(() => handleSubmit(), 500);
   }
 
   return (

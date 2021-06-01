@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   container: {
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(4),
   },
   paper: {
@@ -72,8 +72,8 @@ export default function UsersList() {
     }
     //loadUsers();
 
-    // Wait 1 second to view the upload
-    setTimeout(() => loadUsers(), 100);
+    // Wait 0,5 seconds to view the load
+    setTimeout(() => loadUsers(), 500);
   }, []);
 
   async function handleDelete(id) {
@@ -98,6 +98,14 @@ export default function UsersList() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
+              <Button
+                style={{ marginBottom: '10px' }}
+                variant="contained"
+                color="primary"
+                href={'/admin/users/include'}
+              >
+                Cadastrar
+              </Button>
               <Paper className={classes.paper}>
                 <h2>Listagem de Usuários</h2>
                 <Grid container spacing={3}>

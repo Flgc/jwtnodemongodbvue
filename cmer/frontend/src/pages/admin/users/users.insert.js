@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   container: {
-    paddingTop: theme.spacing(4),
+    paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(4),
   },
   paper: {
@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   formControl: { width: '60%' },
+  btnSuccess: {
+    backgroundColor: 'green',
+    color: '#fff',
+    '&:hover': { backgroundColor: '#12b912' },
+  },
 }));
 
 export default function UsersInsert() {
@@ -99,6 +104,13 @@ export default function UsersInsert() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
+              <Button
+                style={{ marginBottom: 10 }}
+                variant="contained"
+                href={'/admin/users'}
+              >
+                Voltar
+              </Button>
               <Paper className={classes.paper}>
                 <h2>Cadastro de Usuários</h2>
                 <Grid container spacing={3}>
@@ -171,7 +183,7 @@ export default function UsersInsert() {
                     <Button
                       variant="contained"
                       onClick={handleSubmit}
-                      color="secondary"
+                      className={classes.btnSuccess}
                     >
                       Salvar
                     </Button>

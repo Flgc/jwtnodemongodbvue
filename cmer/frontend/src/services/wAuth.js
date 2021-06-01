@@ -33,8 +33,8 @@ export default function WAuth({ component: Component, ...rest }) {
     }
     //verify();
 
-    // Wait 1 second to view the upload
-    setTimeout(() => verify(), 1000);
+    // Wait 0,5 seconds to view the load
+    setTimeout(() => verify(), 500);
   }, []);
 
   return loading ? (
