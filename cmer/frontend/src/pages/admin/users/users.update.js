@@ -25,6 +25,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import apiConnecting from '../../../services/apiConnecting';
+import AddIcon from '@material-ui/icons/Add';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import SaveIcon from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,6 +130,7 @@ export default function UsersUpdate() {
                 variant="contained"
                 href={'/admin/users'}
               >
+                <ArrowBackIcon />
                 Voltar
               </Button>
               <Button
@@ -135,6 +139,7 @@ export default function UsersUpdate() {
                 color="primary"
                 href={'/admin/users/include'}
               >
+                <AddIcon />
                 Cadastrar
               </Button>
               <Paper className={classes.paper}>
@@ -211,6 +216,7 @@ export default function UsersUpdate() {
                       onClick={handleSubmit}
                       className={classes.btnSuccess}
                     >
+                      <SaveIcon />
                       Salvar
                     </Button>
                   </Grid>

@@ -13,7 +13,6 @@ import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import MenuAdmin from '../../../components/menu-admin';
-//import ImgAdmin from '../../../assets/img/admin.png';
 import Footer from '../../../components/footer-admin';
 import Paper from '@material-ui/core/Paper';
 import apiConnecting from '../../../services/apiConnecting';
@@ -29,6 +28,9 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Chip from '@material-ui/core/Chip';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import AddIcon from '@material-ui/icons/Add';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import { getNameType, getNameTypeLabel } from '../../../functions/static_data';
 
@@ -104,6 +106,7 @@ export default function UsersList() {
                 color="primary"
                 href={'/admin/users/include'}
               >
+                <AddIcon />
                 Cadastrar
               </Button>
               <Paper className={classes.paper}>
@@ -167,12 +170,14 @@ export default function UsersList() {
                                       color="primary"
                                       href={'/admin/users/update/' + row._id}
                                     >
+                                      <AutorenewIcon />
                                       Atualizar
                                     </Button>
                                     <Button
                                       color="secondary"
                                       onClick={() => handleDelete(row._id)}
                                     >
+                                      <ClearIcon />
                                       Excluir
                                     </Button>
                                   </ButtonGroup>

@@ -17,12 +17,14 @@ import MenuAdmin from '../../../components/menu-admin';
 //import ImgAdmin from '../../../assets/img/admin.png';
 import Footer from '../../../components/footer-admin';
 import Paper from '@material-ui/core/Paper';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import SaveIcon from '@material-ui/icons/Save';
 import apiConnecting from '../../../services/apiConnecting';
 
 const useStyles = makeStyles((theme) => ({
@@ -109,6 +111,7 @@ export default function UsersInsert() {
                 variant="contained"
                 href={'/admin/users'}
               >
+                <ArrowBackIcon />
                 Voltar
               </Button>
               <Paper className={classes.paper}>
@@ -185,6 +188,7 @@ export default function UsersInsert() {
                       onClick={handleSubmit}
                       className={classes.btnSuccess}
                     >
+                      <SaveIcon />
                       Salvar
                     </Button>
                   </Grid>
