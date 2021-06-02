@@ -12,15 +12,15 @@ exports.index = async (req, res) => {
     .json({ message: 'Hello World from multisession Controllers' });
 };
 
-const Venom = require('./Classes/Venom');
+const Venom = require('./class/venom');
 const path = require('path');
 const fs = require('fs');
 let sessions = [];
 let started = [];
-const auxFunctions = require('../Functions/functions');
+const auxFunctions = require('../functions/functions');
 let limit = new Number(process.env.SESSION_LIMIT) || 16;
 const io = require('../../server');
-const messageHelper = require('./messages.controller');
+const messageHelper = require('./message.controllers');
 
 module.exports = {
   async createInternal() {
