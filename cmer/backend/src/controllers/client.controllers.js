@@ -1,7 +1,7 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
- * file: src/controllers/Client.controllers.js
+ * file: src/controllers/client.controllers.js
  * Description: Responsável pelo CRUD da classe: 'Client'
  * Data: 01/06/2021
  */
@@ -10,7 +10,7 @@ const Clients = require('../models/client.model');
 const messageHelper = require('../models/messages.model');
 
 exports.index = async (req, res) => {
-  res.status(200).json({ message: 'Hello World from User Controller' });
+  res.status(200).json({ message: 'Hello World from Client Controllers' });
 };
 
 const path = require('path');

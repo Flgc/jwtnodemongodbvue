@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 const secret = 'mysecret';
 
 exports.index = async (req, res) => {
-  res.status(200).json({ message: 'Hello World from User Controller' });
+  res.status(200).json({ message: 'Hello World from User Controllers' });
 };
 
 exports.registerNewUser = async (req, res) => {
