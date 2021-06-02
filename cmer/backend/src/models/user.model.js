@@ -2,7 +2,7 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
  * file: src/models/user.model.js
- * Description: Definin Users Model
+ * Description: Users Model
  * Data: 13/05/2021
  */
 

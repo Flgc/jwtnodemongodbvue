@@ -2,9 +2,9 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  * mecanicaBot
  *
- * file: list-menu-admin.js
- * Description: Lista do Menu Admin
- * Data: 30/04/2021
+ * file: src/components/list-menu-admin.js
+ * Description:
+ * Data: 17/05/2021
  */
 
 import React from 'react';
@@ -13,13 +13,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
+import ContactPhone from '@material-ui/icons/ContactPhone';
 import PeopleIcon from '@material-ui/icons/People';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
-import { logout } from '../services/auth';
+//import BarChartIcon from '@material-ui/icons/BarChart';
+import WhatsApp from '@material-ui/icons/WhatsApp';
+import ExitToApp from '@material-ui/icons/ExitToApp';
+import apiConnecting from '../services/apiConnecting';
+import { getToken, logout } from '../services/auth';
+
 export const mainListItems = (
   <div>
     <ListItem button component="a" href="/admin">
@@ -28,62 +29,55 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-
-    <ListItem button component="a" href="/admin">
-      <ListItemIcon>
-        <BusinessCenterIcon />
-      </ListItemIcon>
-      <ListItemText primary="Pedidos" />
-    </ListItem>
-
-    <ListItem button component="a" href="/admin/usuarios">
-      <ListItemIcon>
-        <EmojiPeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Usuários" />
-    </ListItem>
-
-    <ListItem button component="a" href="/admin/funcionarios">
+    <ListItem button component="a" href="/admin/users">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Funcionários" />
+      <ListItemText primary="Usuários" />
     </ListItem>
-
-    <ListItem button component="a" href="/admin/whatsapp">
+    <ListItem button component="a" href="/admin/whatsappclient">
       <ListItemIcon>
-        <WhatsAppIcon />
+        <ContactPhone />
       </ListItemIcon>
-      <ListItemText primary="WhatsApp" />
+      <ListItemText primary="Clientes" />
     </ListItem>
-
-    <ListItem button component="a" href="/admin">
+    {/* <ListItem button>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Estatísticas" />
+      <ListItemText primary="Reports" />
+    </ListItem> */}
+    <ListItem button>
+      <ListItemIcon>
+        <WhatsApp />
+      </ListItemIcon>
+      <ListItemText primary="Mensagens Gravadas" />
     </ListItem>
   </div>
 );
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Opções rápidas</ListSubheader>
-
-    <ListItem
-      button={true}
-      onClick={(e) => {
-        let s = window.confirm('Deseja sair?');
-        if (s) {
-          logout();
-          window.location.href = '/admin/login';
-        }
-      }}
-    >
+    <ListSubheader inset>Opções</ListSubheader>
+    <ListItem button onClick={exitConfirm}>
       <ListItemIcon>
-        <ExitToAppIcon />
+        <ExitToApp />
       </ListItemIcon>
       <ListItemText primary="Sair" />
     </ListItem>
   </div>
 );
+
+async function exitConfirm() {
+  if (window.confirm('Deseja realmente sair do sistema?')) {
+    const response = await apiConnecting.get('/api/users/destroytoken', {
+      headers: { token: getToken() },
+    });
+    if (response.status === 200) {
+      logout();
+      window.location.href = '/admin/login';
+    } else {
+      alert('Não foi possível fazer o logout!');
+    }
+  }
+}

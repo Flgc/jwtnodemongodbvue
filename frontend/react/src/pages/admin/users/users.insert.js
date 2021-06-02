@@ -2,44 +2,55 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  * mecanicaBot
  *
- * file: funcionarios.cadastro.js
- * Description: Responsável por cadastrar os funcionarios no frontend
- * Data: 30/04/2021* Data: 30/04/2021
+ * file: src/pages/admin/users/users.insert.js
+ * Description:
+ * Data: 17/05/2021
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import MenuAdmin from '../../../components/menu-admin';
+//import ImgAdmin from '../../../assets/img/admin.png';
+import Footer from '../../../components/footer-admin';
 import Paper from '@material-ui/core/Paper';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import SaveIcon from '@material-ui/icons/Save';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import Copyright from '../../../components/footer';
-import { Grid } from '@material-ui/core';
-import api from '../../../services/api';
-
-//const drawerWidth = 240;
+import SaveIcon from '@material-ui/icons/Save';
+import apiConnecting from '../../../services/apiConnecting';
 
 const useStyles = makeStyles((theme) => ({
-  root: { display: 'flex' },
-  title: { flexGrow: 1 },
+  root: {
+    display: 'flex',
+  },
+  title: {
+    flexGrow: 1,
+  },
   appBarSpacer: theme.mixins.toolbar,
-  content: { flexGrow: 1, height: '100vh', overflow: 'auto' },
-  container: { paddingTop: theme.spacing(2), paddingBottom: theme.spacing(4) },
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4),
+  },
   paper: {
     padding: 35,
     display: 'flex',
     overflow: 'auto',
     flexDirection: 'column',
   },
-  formControl: { width: '100%' },
+  formControl: { width: '60%' },
   btnSuccess: {
     backgroundColor: 'green',
     color: '#fff',
@@ -47,117 +58,101 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [tipo, setTipo] = useState('');
-  const [foto, setFoto] = useState('');
+export default function UsersInsert() {
+  const classes = useStyles();
+
+  const [nome_form, setNome] = useState('');
+  const [email_form, setEmail] = useState('');
+  const [tipo_form, setTipo] = useState('');
+  const [senha_form, setSenha] = useState('');
+  const [foto_form, setFoto] = useState('');
 
   async function handleSubmit() {
-    if (!nome || !email || !senha || !tipo) {
-      return alert('Preencha todos os campos!');
-    }
+    /* Receive all form variables */
+    const data = {
+      name_user: nome_form,
+      email_user: email_form,
+      type_user: tipo_form,
+      password_user: senha_form,
+      photo_profile_user: foto_form,
+    };
 
-    try {
-      const data = {
-        nome_usuario: nome,
-        email_usuario: email,
-        senha_usuario: senha,
-        tipo_usuario: tipo,
-        foto_perfil: foto,
-      };
-      console.log(data);
-      const response = await api.post('/api/workers', data);
-      console.log(response);
+    if (
+      nome_form !== '' &&
+      email_form !== '' &&
+      tipo_form !== '' &&
+      senha_form !== ''
+    ) {
+      const res = await apiConnecting.post('/api/users', data);
 
-      if (response.status === 200) {
-        return alert('Cadastro efetuado!');
-      }
-    } catch (e) {
-      if (e === 'Error: Request failed with status code 400') {
-        alert('O cadastro já existe!');
+      if (res.status === 201) {
+        window.location.href = '/admin/users';
       } else {
-        alert(e);
-        alert('Erro, tente novamente mais tarde!');
+        alert('Erro ao cadastrar o usuário!s');
       }
+    } else {
+      alert('Por favor, preencha todos os dados obrigatório!');
     }
   }
 
-  const classes = useStyles();
   return (
     <div className={classes.root}>
-      <CssBaseline />
-
-      <MenuAdmin
-        name="Cadastro de Funcionários"
-        image={'../../../assets/img/avatar.jpg'}
-        // image={
-        //   'https://avatars.githubusercontent.com/u/25508594?s=88&u=5b5d48594bf2e0858c8e35ea14ca670bed657b05&v=4'
-        // }
-      />
-
+      {/**/}
+      {/* Desestructured Menu Layout */}
+      <MenuAdmin title={'USUÁRIOS'} />
+      {/**/}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-
         <Container maxWidth="lg" className={classes.container}>
-          <Grid>
-            <Grid sm={12}>
+          <Grid container spacing={3}>
+            <Grid item sm={12}>
+              <Button
+                style={{ marginBottom: 10 }}
+                variant="contained"
+                href={'/admin/users'}
+              >
+                <ArrowBackIcon />
+                Voltar
+              </Button>
               <Paper className={classes.paper}>
-                <h2>Cadastro de Funcionários</h2>
-
+                <h2>Cadastro de Usuários</h2>
                 <Grid container spacing={3}>
-                  <Grid item xs={12} sm={10}>
+                  <Grid item xs={12} sm={12}>
                     <TextField
                       required
                       id="nome"
                       name="nome"
-                      variant="outlined"
-                      label="Nome completo"
+                      label="Nome Completo"
                       fullWidth
                       autoComplete="nome"
-                      value={nome}
+                      value={nome_form}
                       onChange={(e) => setNome(e.target.value)}
                     />
                   </Grid>
-                  <img
-                    src={foto}
-                    alt=""
-                    style={{
-                      maxHeight: '100px',
-                      marginLeft: '4%',
-                      maxWidth: '100px',
-                      height: '100px',
-                      width: '100px',
-                    }}
-                  ></img>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       required
                       id="email"
                       name="email"
                       label="Email"
-                      variant="outlined"
                       fullWidth
                       autoComplete="email"
-                      value={email}
+                      value={email_form}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </Grid>
-
                   <Grid item xs={12} sm={3}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel id="labelTipo">Tipo</InputLabel>
+                      <InputLabel id="labeltipo">Tipo</InputLabel>
                       <Select
-                        labelId="labelTipo"
+                        labelId="labeltipo"
                         id="tipo"
-                        variant="outlined"
-                        value={tipo}
+                        value={tipo_form}
                         onChange={(e) => setTipo(e.target.value)}
                       >
-                        <MenuItem value={3}>Administrador</MenuItem>
+                        <MenuItem value={1}>Administrador</MenuItem>
                         <MenuItem value={2}>Gerente</MenuItem>
-                        <MenuItem value={1}>Funcionário</MenuItem>
+                        <MenuItem value={3}>Funcionário</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
@@ -166,26 +161,23 @@ export default function Dashboard() {
                       type="password"
                       required
                       id="senha"
-                      variant="outlined"
                       name="senha"
-                      label="Senha"
+                      label="senha"
                       fullWidth
                       autoComplete="senha"
-                      value={senha}
+                      value={senha_form}
                       onChange={(e) => setSenha(e.target.value)}
                     />
                   </Grid>
-
                   <Grid item xs={12} sm={12}>
                     <TextField
-                      required
+                      //required
                       id="foto"
                       name="foto"
-                      label="Foto de perfil"
+                      label="foto"
                       fullWidth
-                      variant="outlined"
                       autoComplete="foto"
-                      value={foto}
+                      value={foto_form}
                       onChange={(e) => setFoto(e.target.value)}
                     />
                   </Grid>
@@ -196,7 +188,8 @@ export default function Dashboard() {
                       onClick={handleSubmit}
                       className={classes.btnSuccess}
                     >
-                      <SaveIcon /> Salvar
+                      <SaveIcon />
+                      Salvar
                     </Button>
                   </Grid>
                 </Grid>
@@ -205,7 +198,10 @@ export default function Dashboard() {
           </Grid>
 
           <Box pt={4}>
-            <Copyright />
+            {/**/}
+            {/* Desestructured Footer Layout */}
+            <Footer />
+            {/**/}
           </Box>
         </Container>
       </main>

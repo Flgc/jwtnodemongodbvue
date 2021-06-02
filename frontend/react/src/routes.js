@@ -1,68 +1,77 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
- * mecanicaBot
  *
- * file: routes.js
- * Description: Responsável pelas rotas no frontend
- * Data: 30/04/2021
+ * file: src/routes/routes.js
+ * Description: Responsável pelas rotas do frontend
+ * Data: 17/05/2021
  */
 
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import WhatsApp from './pages/admin/Whatsapp/index';
+
+// Admin Imports
 import Dashboard from './pages/admin/dashboard';
-import Usuarios from './pages/admin/usuarios';
-import UsuariosEditar from './pages/admin/usuarios/usuarios.editar';
-import UsuariosCadastrar from './pages/admin/usuarios/cadastro.usuarios';
-import Page404 from './pages/404/NotFound';
-
 import Login from './pages/admin/login';
-import Funcionarios from './pages/admin/funcionarios/index';
-import FuncionariosEditar from './pages/admin/funcionarios/funcionarios.editar';
-import FuncionariosCadastrar from './pages/admin/funcionarios/funcionarios.cadastro';
 
+import WhatsAppClient from './pages/admin/whatsappClient';
+import WhatsAppClientInsert from './pages/admin/whatsappClient/whatsappClient.insert';
+import WhatsAppClientUpdate from './pages/admin/whatsappClient/whatsappClient.update';
+
+import Users from './pages/admin/users';
+import UsersInsert from './pages/admin/users/users.insert';
+import UsersUpdate from './pages/admin/users/users.update';
+
+// Client imports
+import Home from './pages/client/home';
+import WhatasppClientDetails from './pages/client/whatsappClient/whatsappClient.details';
+
+// Authorization
 import PrivateRoute from './services/wAuth';
-
-//
 
 export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <PrivateRoute path="/" exact component={Usuarios} />
-        s
-        <PrivateRoute path="/admin" exact component={Dashboard} />
+        {/* Client Route*/}
+        <Route path="/" exact component={Home} />
+        <PrivateRoute
+          path="/whatsappclient/:idClient"
+          exact
+          component={WhatasppClientDetails}
+        />
+
+        {/* Admin Route*/}
         <Route path="/admin/login" exact component={Login} />
-        <PrivateRoute path="/admin/whatsapp" exact component={WhatsApp} />
-        <PrivateRoute path="/admin/usuarios" exact component={Usuarios} />
+        <PrivateRoute path="/admin" exact component={Dashboard} />
+
         <PrivateRoute
-          path="/admin/usuarios/cadastrar"
+          path="/admin/whatsappclient"
           exact
-          component={UsuariosCadastrar}
+          component={WhatsAppClient}
         />
         <PrivateRoute
-          path="/admin/usuarios/editar/:idUsuario"
+          path="/admin/whatsappclient/include"
           exact
-          component={UsuariosEditar}
+          component={WhatsAppClientInsert}
         />
         <PrivateRoute
-          path="/admin/funcionarios"
+          path="/admin/whatsappclient/update/:idClient"
           exact
-          component={Funcionarios}
+          component={WhatsAppClientUpdate}
+        />
+
+        {/* Users Route*/}
+        <PrivateRoute path="/admin/users" exact component={Users} />
+        <PrivateRoute
+          path="/admin/users/include"
+          exact
+          component={UsersInsert}
         />
         <PrivateRoute
-          path="/admin/funcionarios/editar/:idFuncionario"
+          path="/admin/users/update/:userId"
           exact
-          component={FuncionariosEditar}
+          component={UsersUpdate}
         />
-        <PrivateRoute
-          path="/admin/funcionarios/cadastrar"
-          exact
-          component={FuncionariosCadastrar}
-        />
-        <Route path="*">
-          <Page404 />
-        </Route>
       </Switch>
     </BrowserRouter>
   );

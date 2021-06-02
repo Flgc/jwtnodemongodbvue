@@ -2,7 +2,7 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
  * file: src/models/messages.model.js
- * Description: Responsável pelo modelo da classe 'Messages'
+ * Description: messages Model
  * Data: 15/05/2021
  */
 
@@ -28,5 +28,4 @@ const messagesSchema = new Schema(
 );
 
 const Messages = mongoose.model('Messages', messagesSchema);
-
 module.exports = Messages;

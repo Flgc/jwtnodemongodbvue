@@ -1,8 +1,8 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
- * file: src/models/user.model.js
- * Description: Responsável pelo modelo da da base 'Client'
+ * file: src/models/client.model.js
+ * Description: clients Model
  * Data: 15/05/2021
  */
 
@@ -11,12 +11,12 @@ const Schema = mongoose.Schema;
 
 const clientSchema = new Schema(
   {
-    inAttendace: { type: Boolean, default: false },
-    firstAttendace: { type: Boolean, default: true },
-    WorkerAttendance: { type: String, default: 'no-one' },
     fullName: { type: String, required: true },
     profileUrl: { type: String },
     chatId: { type: String, required: true },
+    inAttendace: { type: Boolean, default: false },
+    firstAttendace: { type: Boolean, default: true },
+    WorkerAttendance: { type: String, default: 'no-one' },
   },
   {
     timestamps: true,

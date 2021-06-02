@@ -2,23 +2,22 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  * mecanicaBot
  *
- * file: footer.js
- * Description: Copyright
- * Data: 30/04/2021
+ * file: src/components/footer-admin.js
+ * Description:
+ * Data: 17/05/2021
  */
-
-import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 
-function Copyright() {
+export default function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit">Fabio Luis</Link> {new Date().getFullYear()}
-      {''}
+      <Link color="inherit" href="https://github.com/Flgc">
+        Fábio Luis Guia da Conceição
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
     </Typography>
   );
 }
-
-export default Copyright;

@@ -1,55 +1,44 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
- * mecanicaBot
  *
- * file: wAuth.js
- * Description: Responsável por autorizar o login no frontend
- * Data: 30/04/2021* Data: 30/04/2021
+ * file: src/services/wAuth.js
+ * Description: Autorização das Rotas do ReactJS
+ * Data: 30/05/2021
  */
 
-import React, { useEffect, useState } from 'react';
-import api from './api';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { logout, getToken } from './auth';
-
+import React, { useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import apiConnecting from './apiConnecting';
+import { logout, getToken } from './auth';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 export default function WAuth({ component: Component, ...rest }) {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(async () => {
-  //   let res = await api.get('/api/login/checktoken/' + getToken());
-  //   if (res.data.status == 200) {
-  //     setLoading(false);
-  //     setRedirect(false);
-  //   } else {
-  //     logout();
-  //     setLoading(false);
-  //     setRedirect(true);
-  //   }
-  // }, []);
-
   useEffect(() => {
-    async function setForce() {
-      let res = await api.get('/api/login/checktoken/' + getToken());
+    async function verify() {
+      var res = await apiConnecting.get('/api/users/checktoken', {
+        params: { token: getToken() },
+      });
       if (res.data.status === 200) {
         setLoading(false);
         setRedirect(false);
       } else {
+        // Return to the login page
         logout();
         setLoading(false);
         setRedirect(true);
       }
     }
-    setForce();
+    //verify();
+
+    // Wait 0,5 seconds to view the load
+    setTimeout(() => verify(), 500);
   }, []);
 
   return loading ? (
-    <Backdrop open={true}>
-      <CircularProgress color="inherit" />
-    </Backdrop>
+    <LinearProgress style={{ width: '50%', margin: '80px auto' }} />
   ) : (
     <Route
       {...rest}
@@ -59,9 +48,9 @@ export default function WAuth({ component: Component, ...rest }) {
         ) : (
           <Redirect
             to={{ pathname: '/admin/login', state: { from: props.location } }}
-          ></Redirect>
+          />
         )
       }
-    ></Route>
+    />
   );
 }

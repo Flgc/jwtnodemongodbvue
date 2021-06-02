@@ -2,79 +2,30 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  * mecanicaBot
  *
- * file: dashboard.js
- * Description: Painel de controle do frontend
- * Data: 30/04/2021
+ * file: src/pages/admin/dashboard/index.js
+ * Description:
+ * Data: 17/05/2021
  */
 
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import MenuAdmin from '../../../components/menu-admin';
-import Copyright from '../../../components/footer';
-import { Grid } from '@material-ui/core';
+import { getTypeUser } from '../../../services/auth';
+import Footer from '../../../components/footer-admin';
+//import Paper from '@material-ui/core/Paper';
 
-const drawerWidth = 240;
+import DashAdmin from './admin';
+import DashManager from './manager';
+import DashEmployee from './employee';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
   title: {
     flexGrow: 1,
-  },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
-    },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
@@ -92,27 +43,43 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
-  fixedHeight: {
-    height: 240,
-  },
 }));
+
+// get background image of the logged user
+function getDashBoard() {
+  console.log(getTypeUser());
+  if (getTypeUser() === '1') {
+    return <DashAdmin />;
+  } else if (getTypeUser() === '2') {
+    return <DashManager />;
+  } else {
+    return <DashEmployee />;
+  }
+}
 
 export default function Dashboard() {
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
-      <CssBaseline />
-
-      <MenuAdmin name="Dashboard" />
-
+      {/**/}
+      {/* Desestructured Menu Layout */}
+      <MenuAdmin title={'DASHBOARD'} />
+      {/**/}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-
         <Container maxWidth="lg" className={classes.container}>
-          <Grid></Grid>
-
+          <Grid container spacing={3}>
+            {/**/}
+            {/* Wallpaper */}
+            {getDashBoard()}
+            {/**/}
+          </Grid>
           <Box pt={4}>
-            <Copyright />
+            {/**/}
+            {/* Desestructured Footer Layout */}
+            <Footer />
+            {/**/}
           </Box>
         </Container>
       </main>

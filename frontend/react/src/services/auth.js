@@ -1,35 +1,32 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
- * mecanicaBot
  *
- * file: auth.js
- * Description: Sobre o usuário autorizado
- * Data: 30/04/2021
+ * file: src/services/auth.js
+ * Description: Construtor do profile logado e autenticado
+ * Data: 20/05/2021
  */
 
 export const TOKEN_KEY = '&app-token';
-export const ID_USUARIO = '&id-usuario';
-export const NOME_USUARIO = '&nome-usuario';
+export const ID_USER = '&id-user';
+export const NAME_USER = '&name-user';
 export const USER_TYPE = '&user-type';
-export const PROFILE_LINK = '&profile-link';
 
+//Save received token after correct login
 export const login = (token) => {
-  sessionStorage.setItem(TOKEN_KEY, token);
+  localStorage.setItem(TOKEN_KEY, token);
 };
-export const getToken = () => sessionStorage.getItem(TOKEN_KEY);
+
 export const logout = () => {
-  sessionStorage.clear();
+  localStorage.clear();
 };
 
-export const setIdUsuario = (id) => sessionStorage.setItem(ID_USUARIO, id);
-export const getIdUsuario = () => sessionStorage.getItem(ID_USUARIO);
+export const setIdUser = (id) => localStorage.setItem(ID_USER, id);
+export const getIdUser = () => localStorage.getItem(ID_USER);
 
-export const setNomeUsuario = (id) => sessionStorage.setItem(NOME_USUARIO, id);
-export const getNomeUsuario = () => sessionStorage.getItem(NOME_USUARIO);
+export const setNameUser = (nome) => localStorage.setItem(NAME_USER, nome);
+export const getNameUser = localStorage.getItem('&name-user');
 
-export const setTipoUsuario = (id) => sessionStorage.setItem(USER_TYPE, id);
-export const getTipoUsuario = () => sessionStorage.getItem(USER_TYPE);
+export const setTypeUser = (tipo) => localStorage.setItem(USER_TYPE, tipo);
+export const getTypeUser = () => localStorage.getItem('&user-type');
 
-export const setProfileLinkUsuario = (id) =>
-  sessionStorage.setItem(PROFILE_LINK, id);
-export const getProfileLinkUsuario = () => sessionStorage.getItem(PROFILE_LINK);
+export const getToken = () => localStorage.getItem(TOKEN_KEY);

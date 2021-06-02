@@ -3,12 +3,11 @@
  * mecanicaBot
  *
  * file: App.js
- * Description: Responsável por apontar as rotas no frontend
- * Data: 30/04/2021
+ * Description: Arquivo principal do FrontEnd
+ * Data: 17/05/2021
  */
 
 import React from 'react';
-
 import Routes from './routes';
 
 function App() {

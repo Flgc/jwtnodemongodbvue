@@ -2,235 +2,197 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  * mecanicaBot
  *
- * file: login.js
- * Description: Responsável pelo login de usuários no frontend
- * Data: 30/04/2021* Data: 30/04/2021
+ * file: src/pages/admin/login/index.js
+ * Description:
+ * Data: 20/05/2021
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Copyright from '../../../components/footer';
+import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
+import ApiConnecting from '../../../services/apiConnecting';
 import {
   login,
-  setIdUsuario,
-  setNomeUsuario,
-  setProfileLinkUsuario,
-  setTipoUsuario,
+  setIdUser,
+  setNameUser,
+  setTypeUser,
 } from '../../../services/auth';
 
-import api from '../../../services/api';
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="#">
+        MecanicaBot
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-  },
-
-  image: {
-    /* backgroundImage:
-      'url(https://images.unsplash.com/photo-1613565101053-e1218a07cc34?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max)',
-    */
-    backgroundImage: '../../../assets/img/fundo2.jpg',
-    backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light'
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  },
-
   paper: {
-    margin: theme.spacing(8, 4),
+    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
-
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
-
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
 }));
 
-export default function SignInSide() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [message, setMessage] = useState('');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    Draw();
-    setEmail('');
-    setSenha('');
-  };
-
+export default function SignIn() {
   const classes = useStyles();
+  const [email, setEmail] = useState('');
+  const [password, setSenha] = useState('');
+  const [showPassword, setShowPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  async function Login(event) {
-    event.preventDefault();
-    try {
-      const response = await api.post('/api/login', { email, senha });
-      if (response.data.status === 1) {
-        login(response.data.token);
-        setIdUsuario(response.data.user._id);
-        setProfileLinkUsuario(response.data.user.foto_perfil);
-        setNomeUsuario(response.data.user.nome_usuario);
-        setTipoUsuario(response.data.user.tipo_usuario);
-
-        window.location.href = '/admin';
+  // Start login validation
+  async function handleSubmit() {
+    await ApiConnecting.post('/api/users/login', {
+      email: email,
+      password: password,
+    }).then((res) => {
+      if (res.status === 200) {
+        if (res.data.status === 1) {
+          // Received information of localStorage
+          login(res.data.token);
+          setIdUser(res.data.user_id);
+          setNameUser(res.data.user_name);
+          setTypeUser(res.data.user_type);
+          window.location.href = '/admin';
+        } else if (res.data.status === 2) {
+          alert(res.data.error);
+        }
+        setLoading(false);
       } else {
-        setTitle('Acesso não autorizado');
-        setMessage('Seu email ou senha estão incorretos.');
-        handleClickOpen();
+        alert('Erro no servidor');
+        setLoading(false);
       }
-    } catch (e) {
-      setTitle('Erro no servidor!');
-      setMessage(
-        'Ocorreu um erro interno no servidor, tente novamente mais tarde!'
-      );
-      handleClickOpen();
-    }
+    });
   }
 
-  function Draw() {
-    return (
-      <Grid container component="main" className={classes.root}>
-        <CssBaseline />
+  // login load time
+  function loadSubmit() {
+    setLoading(true);
 
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
-
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <div className={classes.paper}>
-            <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-              <DialogContent>
-                <DialogContentText id="alert-dialog-description">
-                  {message}
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    handleClose();
-                  }}
-                  color="primary"
-                  autoFocus
-                >
-                  Ok
-                </Button>
-              </DialogActions>
-            </Dialog>
-
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
-
-            <Typography component="h1" variant="h5">
-              Login
-            </Typography>
-
-            <form className={classes.form} id="form" onSubmit={Login}>
-              <input style={{ display: 'none' }} id="sub" type="submit" />
-
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                label="Email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-              />
-
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                value={senha}
-                onChange={(e) => {
-                  setSenha(e.target.value);
-                }}
-                name="password"
-                label="Senha"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <label htmlFor="sub">
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Login
-                </Button>
-              </label>
-
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Esqueceu a senha?
-                  </Link>
-                </Grid>
-
-                <Grid item></Grid>
-              </Grid>
-            </form>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </div>
-        </Grid>
-      </Grid>
-    );
+    // Wait 0,5 seconds to view the load
+    setTimeout(() => handleSubmit(), 500);
   }
 
-  return Draw();
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Login
+        </Typography>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Digite seu email"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          // Enable variable in form
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+        {/* <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Digite sua senha"
+          type="password"
+          id="password"
+          autoComplete="current-password"
+          value={password}
+          //Enable variable in form
+          onChange={(e) => {
+            setSenha(e.target.value);
+          }}
+        /> */}
+
+        <FormControl
+          variant="outlined"
+          style={{ width: '100%', marginTop: 10 }}
+        >
+          <InputLabel htmlFor="passwordField">Digite sua senha *</InputLabel>
+          <OutlinedInput
+            id="passwordField"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => {
+              setSenha(e.target.value);
+            }}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={(e) => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={133}
+          />
+        </FormControl>
+
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          //start function
+          onClick={loadSubmit}
+          disabled={loading}
+        >
+          {loading ? <CircularProgress /> : 'Entrar'}
+        </Button>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>
+  );
 }
