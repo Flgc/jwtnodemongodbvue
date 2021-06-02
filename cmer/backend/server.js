@@ -12,13 +12,13 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
-//const pathEnv = path.resolve(__dirname, '.env');
+const pathEnv = path.resolve(__dirname, '.env');
 //const mongoose = require('mongoose');
 const routes = require('./src/routes');
 const functions = require('./src/functions/functions');
 const restApi = express();
 const mongoConector = require('./src/config/mongooseConnection.config');
-const WhatsApp = require('./src/controllers/multisession.controller');
+const WhatsApp = require('./src/controllers/multisession.controllers');
 
 const app = express();
 const port = process.env.PORT || 3333;
