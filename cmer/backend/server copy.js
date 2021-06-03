@@ -6,31 +6,31 @@
  * Data: 13/05/2021
  */
 
+('use strict');
+
 const path = require('path');
 const pathEnv = path.resolve(__dirname, '.env');
+//.env
+require('dotenv').config({ path: pathEnv });
 
 const express = require('express');
-const restApi = express();
-
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const fs = require('fs');
-const routes = require('./src/routes');
+const cors = require('cors');
 const functions = require('./src/functions/functions');
 const mongoConector = require('./src/config/mongooseConnection.config');
 const WhatsApp = require('./src/controllers/multisession.controllers');
 
-const app = express();
+const routes = require('./src/routes');
+//const app = express();
+const restApi = express();
 
-('use strict');
+//restApi.use(cors());
+//restApi.use(cookieParser());
+//restApi.use(express.json());
 
-app.use(cors());
-app.use(cookieParser());
-app.use(express.json());
-
-app.use(routes);
+restApi.use(routes);
 
 let serverRest;
 
@@ -101,7 +101,7 @@ let io;
   restApi.use(express.json({ limit: '20mb' }));
   restApi.use(cookieParser());
 
-  restApi.use(app);
+  //restApi.use(app);   //start frontend --> Future
 })();
 
 io.on('connection', (socket) => {
