@@ -8,7 +8,7 @@
 
 const express = require("express");
 const Router = express.Router();
-const User = require("../../../controllers/user.controllersII");
+const User = require("../../../controllers/user.controllers");
 
 Router.post("/", User.login);
 Router.get("/checktoken/:token", User.checkToken);

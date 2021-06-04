@@ -20,7 +20,7 @@ const clientSchema = new Schema(
   },
   {
     timestamps: true,
-    collection: "client",
+    collection: "clients",
   }
 );
 

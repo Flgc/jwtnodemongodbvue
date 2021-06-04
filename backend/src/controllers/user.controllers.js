@@ -2,146 +2,213 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
  * file: src/controllers/user.controllers.js
- * Description: Responsável pelo CRUD da classe: 'User'
- * Data: 26/03/2021
+ * Description: Responsável pelo CRUD da classe: 'Users'
+ * Data: 03/06/2021
  */
 
-const User = require("../models/user.model");
+const Workers = require("../models/user.model");
+const jwt = require("jsonwebtoken");
+const secret = process.env.SECRET;
 
-// ==> conceito de Async e Await
-
-// ==> Método responsável por verificar se o email informado do novo cadastro já existe na base de dados
-exports.registerNewUser = async (req, res) => {
-  try {
-    // => Verificando se o usuário já possui algum e-mail já cadastrado:
-    const isUser = await User.find({ email: req.body.email });
-
-    if (isUser.length >= 1) {
-      return res
-        .status(409)
-        .json({ message: "Atenção! E-mail já registrado anteriormente!" });
+module.exports = {
+  async index(req, res, next) {
+    try {
+      let Worker = await Workers.find();
+      res.status(200).send({
+        Workers: Worker,
+        message: "success",
+      });
+    } catch (error) {
+      next(error);
     }
+  },
 
-    // ==> Registra o novo usuário
-    const newUser = new User(req.body);
-    const user = await newUser.save(); // ==> '.save' é do mongoose armazena o login e senha que esta na variavel 'newUser'
+  async details(req, res, next) {
+    try {
+      const { _id } = req.params;
 
-    // ==> Gera o token para novo usuário
-    const token = await newUser.generateAuthToken();
-    res
-      .status(201)
-      .json({ message: "Usuário(a) registrado(a) com sucesso!", user, token });
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-};
+      if (!_id) {
+        const error = new Error("_ID not specified");
+        error.status = 400;
+        next(error);
+      }
 
-// ==> Método responsável por realizar novo login 'User':
-exports.loginUser = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const { password } = req.body;
-    const user = await User.findByCredentials(email, password);
+      let Worker = await Workers.find({ _id });
 
-    // ==> TODO  Não esta retornando o error
-    if (!user) {
-      return res.status(401).json({
-        error: "Erro ao Logar! Verifique suas credenciais de autenticação!",
+      res.status(200).send({
+        Worker: Worker,
+        message: "success",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async create(req, res, next) {
+    try {
+      const {
+        name_user,
+        email_user,
+        type_user,
+        password_user,
+        photo_profile_user,
+      } = req.body;
+      let data = [];
+
+      let Worker = await Workers.findOne({ email_usuario });
+
+      try {
+        let s = Worker.fullName;
+        return res
+          .status(400)
+          .send({ message: "Worker already been registered." });
+      } catch {
+        data = {
+          name_user,
+          email_user,
+          type_user,
+          password_user,
+          photo_profile_user,
+        };
+        Worker = await Workers.create(data);
+        return res.status(200).send({
+          Worker: Worker,
+          message: "success",
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async delete(req, res, next) {
+    try {
+      const { _id } = req.params;
+      if (!_id) {
+        const error = new Error("_ID not specified");
+        error.status = 400;
+        next(error);
+      }
+
+      let Worker = await Workers.findByIdAndDelete({ _id });
+      return res.status(200).send({
+        Worker,
+        message: "success",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async update(req, res, next) {
+    try {
+      const { _id } = req.params;
+      const {
+        name_user,
+        email_user,
+        type_user,
+        password_user,
+        photo_profile_user,
+      } = req.body;
+
+      if (!_id) {
+        const error = new Error("_ID not specified");
+        error.status = 400;
+        next(error);
+      }
+
+      let data = {
+        name_user,
+        email_user,
+        type_user,
+        password_user,
+        photo_profile_user,
+      };
+
+      const Worker = await Workers.findOneAndReplace(_id, data);
+
+      res.status(200).send({
+        Worker,
+        message: "success",
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async login(req, res) {
+    const { email, password } = req.body;
+
+    Workers.findOne({ email_user: email }, function (err, user) {
+      if (err) {
+        console.log(err);
+        res.status(200).json({ error: err });
+      } else if (!user) {
+        res
+          .status(200)
+          .json({ status: 2, error: "1Email ou senha incorreto!" });
+      } else {
+        user.isCorrectPassword(password, async function (err, same) {
+          if (err) {
+            res.status(200).json({ error: err });
+          } else if (!same) {
+            res
+              .status(200)
+              .json({ status: 2, error: "2Email ou senha incorreto!" });
+          } else {
+            const payload = { email };
+            const token = jwt.sign(payload, secret, {
+              expiresIn: "24h",
+            });
+            res.cookie("token", token, { httpOnly: true });
+            res.status(200).json({
+              status: 1,
+              auth: true,
+              token: token,
+              user_id: user._id,
+              user_name: user.name_user,
+              user_type: user.type_user,
+            });
+          }
+        });
+      }
+    });
+  },
+
+  async checkToken(req, res) {
+    const token =
+      req.body.token ||
+      req.query.token ||
+      req.params.token ||
+      req.cookies.token ||
+      req.headers["x-access-token"] ||
+      req.headers.authorization;
+    if (!token) {
+      res.status(200).json({ status: 401, msg: "Access denied" });
+    } else {
+      jwt.verify(token, secret, function (err, decoded) {
+        if (err) {
+          res.status(200).json({ status: 401, msg: "Access denied" });
+        } else {
+          res.status(200).json({ status: 200, decoded });
+        }
       });
     }
+  },
 
-    // ==> Gera o token para o usuário
-    const token = await user.generateAuthToken();
-
-    return res
-      .status(201)
-      .json({ message: "Usuário(a) logado com sucesso!", user, token });
-  } catch (err) {
-    res.status(400).json({ err });
-  }
-};
-
-// ==> Retorna os dados do usuário logado através do token armazenado na base de dados
-exports.returnUserProfile = async (req, res) => {
-  await res.json(req.userData);
-};
-
-// ==> Retorna todos usuário cadastrados na base de dados
-exports.returnAllUser = async (req, res) => {
-  User.find(function (err, user) {
-    if (err)
-      res.status(401).json({ message: "Erro ao listar usuários..:" + err });
-
-    res.json(user);
-  });
-};
-
-// ==> Rota responsavel por retornar usuário por Id
-exports.returnUserId = async (req, res) => {
-  User.findById(req.params.user_id, function (error, user) {
-    if (error) res.status(401).json({ message: "Id inválido..: " + error });
-
-    res.json(user);
-  });
-};
-
-// ==> Rota responsavel por atualizar usuário por Id
-exports.ReturnUpDate = async (req, res) => {
-  try {
-    //Primeiro - Procurar o ID
-    User.findById(req.params.id, function (error, user) {
-      if (error)
-        return res
-          .status(401)
-          .json({ message: "_Id não encontrado...: " + req.params.id });
-
-      //Segundo - Após achar atualiza os objetos
-      user.name = req.body.name;
-      user.email = req.body.email;
-      user.password = req.body.password;
-      user.phone = req.body.phone;
-      user.renav = req.body.renav;
-      user.plcar = req.body.plcar;
-
-      //Terceiro - Persistir as propriedades no dados no banco
-      user.save(function (error) {
-        if (error)
-          return res
-            .status(401)
-            .json({ message: "Error ao atualizar o usuário..: " + error });
-
-        return res
-          .status(201)
-          .json({ message: "Usuário(a) atualizado com sucesso!", user });
-      });
-    });
-  } catch (error) {
-    return res.status(401).json({ message: "<<< Error >>> : " + error });
-  }
-};
-
-// ==> Rota responsavel por atualizar usuário por Id
-exports.ReturnRemov = async (req, res) => {
-  try {
-    //Primeiro - Procurar o ID
-    User.findById(req.params.id, function (error, user) {
-      if (error)
-        return res
-          .status(401)
-          .json({ message: "_Id não encontrado...: " + req.params.id });
-
-      user.remove(function (error) {
-        if (error)
-          return res
-            .status(401)
-            .json({ message: "Error ao excluir o usuário..: " + error });
-
-        return res
-          .status(201)
-          .json({ message: "Usuário(a) excluido com sucesso!", user });
-      });
-    });
-  } catch (error) {
-    return res.status(401).json({ message: "<<< Error >>> : " + error });
-  }
+  async destroyToken(req, res) {
+    const token =
+      req.headers.token ||
+      req.body.token ||
+      req.query.token ||
+      req.cookies.token ||
+      req.headers["x-access-token"] ||
+      req.headers.authorization;
+    if (token) {
+      res.cookie("token", null);
+    } else {
+      res.status(200).send("Unauthorized logout!");
+    }
+    res.send("Session ended successfully!");
+  },
 };
