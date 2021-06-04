@@ -2,36 +2,26 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
  * file: src/models/user.model.js
- * Description: Responsável pelo modelo da classe 'User'
- * Data: 24/03/2021
+ * Description: Users Model
+ * Data: 13/05/2021
  */
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-// ==> Define a Collection (Tabela = 'users')
 const userSchema = new Schema(
   {
-    name: { type: String, maxlength: 50, required: true },
-    email: { type: String, maxlength: 30, required: true },
-    password: { type: String, required: true },
-    phone: { type: String, maxlength: 30, required: false },
-    type: { type: Number, default: 1 }, // 1-User, 2-GrandUSER, 3-HIPER-FOCKING-BIG-MORE-THAN-YOUR-MOM-USER
-    photo_profile: {
+    name_user: { type: String, maxlength: 50, required: true },
+    email_user: { type: String, maxlength: 30, required: true },
+    type_user: { type: Number, default: 1 }, // 1-User, 2-Admin
+    password_user: { type: String, required: true },
+    photo_profile_user: {
       type: String,
       default:
         "https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg",
     },
-    renav: { type: String, maxlength: 30, required: false },
-    plcar: { type: String, maxlength: 15, required: false },
-    tokens: [
-      {
-        token: { type: String, required: true },
-      },
-    ],
   },
   {
     timestamps: true,
@@ -39,63 +29,58 @@ const userSchema = new Schema(
   }
 );
 
-// ==> Realiza o hash da senha antes de salvar a classe do modelo user
+// ==> password hash before saved user model
 userSchema.pre("save", async function (next) {
   const user = this;
-  if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
+  if (user.isModified("password_user")) {
+    user.password_user = await bcrypt.hash(user.password_user, 10);
   }
   next();
 });
 
-// ==> Gera uma autenticação Auth para o user
+// ==> Generate Auth for users
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(
-    { _id: user._id, name: user.name, email: user.email, phone: user.phone },
+    {
+      _id: user._id,
+      name_user: user.name_user,
+      email_user: user.email_user,
+      type_user: user.type_user,
+    },
     "secret"
   );
 
-  // ==> Armazena o Auth gerado  acima concatenado no array 'tokens'
+  // ==> Saving token
   user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
 };
 
-// ==> Faz uma pesquisa atravez de user por email e password
-userSchema.statics.findByCredentials = async (email, password) => {
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new Error({ error: "Login inválido!" });
-  }
-
-  // ==> Compara com a base de dados se a senha estacorreta
-  const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-  if (!isPasswordMatch) {
-    throw new Error({ error: "Login inválido!" });
-  }
-
-  return user;
-};
-
-// ==> Atualiza user
+// ==> Users Update
 userSchema.statics.findOneAndUpdate = async (
-  name,
-  email,
-  phone,
-  renav,
-  plcar
+  name_user,
+  email_user,
+  type_user,
+  photo_profile_user
 ) => {
-  const user = await User.findOne({ name });
+  const user = await User.findOne({ name_user });
   if (!user) {
-    throw new Error({ error: "Usuário inválido!" });
+    throw new Error({ error: "Invalid user!" });
   }
-
   return user;
 };
 
-const User = mongoose.model("User", userSchema);
+// ==> Is the password correct?
+userSchema.methods.isCorrectPassword = function (password, callback) {
+  bcrypt.compare(password, this.password_user, function (err, same) {
+    if (err) {
+      callback(err);
+    } else {
+      callback(err, same);
+    }
+  });
+};
 
-module.exports = User;
+const Users = mongoose.model("Users", userSchema);
+module.exports = Users;

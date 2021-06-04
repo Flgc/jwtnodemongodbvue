@@ -8,10 +8,15 @@
 
 const express = require("express");
 const Router = express.Router();
-const Workers = require("../../../controllers/worker.controller");
+const User = require("../../../controllers/user.controllersII");
 
-Router.post("/", Workers.login);
-Router.get("/checktoken/:token", Workers.checkToken);
-Router.get("/destroytoken/:token", Workers.destroyToken);
+Router.post("/", User.login);
+Router.get("/checktoken/:token", User.checkToken);
+Router.get("/destroytoken/:token", User.destroyToken);
+
+//const Workers = require("../../../controllers/worker.controller");
+//Router.post("/", Workers.login);
+//Router.get("/checktoken/:token", Workers.checkToken);
+//Router.get("/destroytoken/:token", Workers.destroyToken);
 
 module.exports = Router;

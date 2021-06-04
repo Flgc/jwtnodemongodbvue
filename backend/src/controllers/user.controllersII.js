@@ -1,12 +1,12 @@
 /**
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  *
- * file: src/routes/messages.controller.js
- * Description: Responsável pelos controles dos workers na API
- * Data: 01/06/2021
+ * file: src/controllers/user.controllers.js
+ * Description: Responsável pelo CRUD da classe: 'Users'
+ * Data: 03/06/2021
  */
 
-const Workers = require("../models/worker.model");
+const Workers = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET;
 
@@ -47,11 +47,11 @@ module.exports = {
   async create(req, res, next) {
     try {
       const {
-        nome_usuario,
-        email_usuario,
-        tipo_usuario,
-        senha_usuario,
-        foto_perfil,
+        name_user,
+        email_user,
+        type_user,
+        password_user,
+        photo_profile_user,
       } = req.body;
       let data = [];
 
@@ -64,11 +64,11 @@ module.exports = {
           .send({ message: "Worker already been registered." });
       } catch {
         data = {
-          nome_usuario,
-          email_usuario,
-          tipo_usuario,
-          senha_usuario,
-          foto_perfil,
+          name_user,
+          email_user,
+          type_user,
+          password_user,
+          photo_profile_user,
         };
         Worker = await Workers.create(data);
         return res.status(200).send({
@@ -104,11 +104,11 @@ module.exports = {
     try {
       const { _id } = req.params;
       const {
-        nome_usuario,
-        email_usuario,
-        tipo_usuario,
-        senha_usuario,
-        foto_perfil,
+        name_user,
+        email_user,
+        type_user,
+        password_user,
+        photo_profile_user,
       } = req.body;
 
       if (!_id) {
@@ -118,11 +118,11 @@ module.exports = {
       }
 
       let data = {
-        nome_usuario,
-        email_usuario,
-        tipo_usuario,
-        senha_usuario,
-        foto_perfil,
+        name_user,
+        email_user,
+        type_user,
+        password_user,
+        photo_profile_user,
       };
 
       const Worker = await Workers.findOneAndReplace(_id, data);
@@ -138,30 +138,35 @@ module.exports = {
 
   async login(req, res) {
     const { email, senha } = req.body;
-    Workers.findOne({ email_usuario: email }, function (err, user) {
+
+    Workers.findOne({ email_user: email }, function (err, user) {
       if (err) {
         console.log(err);
-        res.status(500).json({ error: err });
+        res.status(200).json({ error: err });
       } else if (!user) {
-        res.status(400).json({ status: 2, error: "e-Access denied" });
+        res.status(200).json({ status: 2, error: "Email ou senha incorreto!" });
       } else {
         user.isCorrectPassword(senha, async function (err, same) {
           if (err) {
-            res.status(500).json({ error: err });
+            res.status(200).json({ error: err });
           } else if (!same) {
-            res.status(200).json({ status: 2, error: "s-Access denied" });
+            res
+              .status(200)
+              .json({ status: 2, error: "Email ou senha incorreto!" });
           } else {
             const payload = { email };
             const token = jwt.sign(payload, secret, {
               expiresIn: "24h",
             });
-            res.cookie("token", token);
-            res
-              .status(200).json({ 
-                status: 1, 
-                auth: true, 
-                token: token, 
-                user: user });
+            res.cookie("token", token, { httpOnly: true });
+            res.status(200).json({
+              status: 1,
+              auth: true,
+              token: token,
+              user_id: user._id,
+              user_name: user.name_user,
+              user_type: user.type_user,
+            });
           }
         });
       }
