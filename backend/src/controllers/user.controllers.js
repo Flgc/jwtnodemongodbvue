@@ -12,10 +12,14 @@ const secret = process.env.SECRET;
 
 module.exports = {
   async index(req, res, next) {
+    res.status(200).json({ message: "Hello World from User Controllers" });
+  },
+
+  async returnAllUser(req, res, next) {
     try {
       let Worker = await Workers.find();
       res.status(200).send({
-        Workers: Worker,
+        Users: Worker,
         message: "success",
       });
     } catch (error) {
@@ -23,7 +27,7 @@ module.exports = {
     }
   },
 
-  async details(req, res, next) {
+  async returnUserId(req, res, next) {
     try {
       const { _id } = req.params;
 
@@ -36,7 +40,7 @@ module.exports = {
       let Worker = await Workers.find({ _id });
 
       res.status(200).send({
-        Worker: Worker,
+        User: Worker,
         message: "success",
       });
     } catch (error) {
@@ -44,7 +48,7 @@ module.exports = {
     }
   },
 
-  async create(req, res, next) {
+  async registerNewUser(req, res, next) {
     try {
       const {
         name_user,
@@ -81,7 +85,7 @@ module.exports = {
     }
   },
 
-  async delete(req, res, next) {
+  async deleteUserId(req, res, next) {
     try {
       const { _id } = req.params;
       if (!_id) {
@@ -92,7 +96,7 @@ module.exports = {
 
       let Worker = await Workers.findByIdAndDelete({ _id });
       return res.status(200).send({
-        Worker,
+        User,
         message: "success",
       });
     } catch (error) {
@@ -100,7 +104,7 @@ module.exports = {
     }
   },
 
-  async update(req, res, next) {
+  async updateUser(req, res, next) {
     try {
       const { _id } = req.params;
       const {
@@ -128,7 +132,7 @@ module.exports = {
       const Worker = await Workers.findOneAndReplace(_id, data);
 
       res.status(200).send({
-        Worker,
+        User,
         message: "success",
       });
     } catch (error) {
@@ -184,18 +188,19 @@ module.exports = {
       req.headers["x-access-token"] ||
       req.headers.authorization;
     if (!token) {
-      res.status(200).json({ status: 401, msg: "Access denied" });
+      res.json({ status: 401, msg: "Não autorizado: Token inexistente!" });
     } else {
       jwt.verify(token, secret, function (err, decoded) {
         if (err) {
-          res.status(200).json({ status: 401, msg: "Access denied" });
+          res.json({ status: 401, msg: "Não autorizado: Token inválido!" });
         } else {
-          res.status(200).json({ status: 200, decoded });
+          res.status(200).json({ status: 200 });
         }
       });
     }
   },
 
+  // Token destroy
   async destroyToken(req, res) {
     const token =
       req.headers.token ||
@@ -204,11 +209,17 @@ module.exports = {
       req.cookies.token ||
       req.headers["x-access-token"] ||
       req.headers.authorization;
+
     if (token) {
-      res.cookie("token", null);
+      res.cookie("token", null, { httpOnly: true });
     } else {
-      res.status(200).send("Unauthorized logout!");
+      res.status(401).send("Logout não autorizado!");
     }
-    res.send("Session ended successfully!");
+    res.send("Sessão finalizada com sucesso!");
+  },
+
+  // Retorna os dados do usuário logado através do token armazenado na base de dados
+  async returnUserProfile(req, res) {
+    await res.json(req.userData);
   },
 };

@@ -8,8 +8,6 @@
 
 'use strict';
 
-// const port = process.env.PORT || 3333;
-
 const path = require('path');
 const pathEnv = path.resolve(__dirname, '.env');
 

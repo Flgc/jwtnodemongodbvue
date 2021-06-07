@@ -10,7 +10,8 @@ const express = require("express");
 const Router = express.Router();
 
 Router.use("/messages", require("./messages.route"));
-//Rota do Usuário do sistema
+
+Router.use("/users", require("./users.route")); // ok
 Router.use("/workers", require("./workers.route")); //ok
 Router.use("/clients", require("./clients.route")); //ok
 
