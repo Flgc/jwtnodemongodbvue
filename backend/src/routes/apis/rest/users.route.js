@@ -11,11 +11,11 @@ const Routes = express.Router();
 const Users = require("../../../controllers/user.controllers");
 
 Routes.get("/", Users.index);
-Routes.post("/new", Users.registerNewUser);
-Routes.get("/all", Users.returnAllUser);
+Routes.post("/users", Users.registerNewUser);
+Routes.get("/alluser", Users.returnAllUser);
 Routes.get("/details/:_id", Users.returnUserId);
-Routes.delete("/delete/:_id", Users.deleteUserId);
-Routes.put("/update/:_id", Users.updateUser);
+Routes.delete("/users/:_id", Users.deleteUserId);
+Routes.put("/users/:_id", Users.updateUser);
 
 Routes.get("/checktoken", Users.checkToken);
 Routes.get("/destroytoken", Users.destroyToken);

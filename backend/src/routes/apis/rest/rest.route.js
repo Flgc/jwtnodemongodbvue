@@ -9,10 +9,8 @@
 const express = require("express");
 const Router = express.Router();
 
-Router.use("/messages", require("./messages.route"));
-
 Router.use("/users", require("./users.route")); // ok
-Router.use("/workers", require("./workers.route")); //ok
 Router.use("/clients", require("./clients.route")); //ok
+Router.use("/messages", require("./messages.route"));
 
 module.exports = Router;
