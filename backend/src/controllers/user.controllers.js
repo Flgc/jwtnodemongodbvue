@@ -22,9 +22,8 @@ module.exports = {
       if (isUser.length >= 1) {
         return res.status(409).json({ message: "Atention, existent e-mail!" });
       }
-
       // ==> Append new user
-      const newUser = new User(req.body);
+      const newUser = new Users(req.body);
       const user = await newUser.save();
 
       res.status(201).json({ message: "User register successfully! ", user });
@@ -83,49 +82,33 @@ module.exports = {
   },
 
   // Users update
+
   async updateUser(req, res, next) {
     try {
-      const { _id } = req.params;
-      const {
-        name_user,
-        email_user,
-        type_user,
-        password_user,
-        photo_profile_user,
-      } = req.body;
-
-      if (!_id) {
-        const error = new Error("_ID not specified");
-        error.status = 400;
-        next(error);
-      }
-
-      let data = {
-        name_user,
-        email_user,
-        type_user,
-        password_user,
-        photo_profile_user,
-      };
-
-      const User = await Users.findOneAndReplace(_id, data);
-
-      if (!User) {
-        return res
-          .status(401)
-          .json({ message: "Users id invalid! " + req.params._id });
-      }
-
-      User.save(function (error) {
+      Users.findById(req.params._id, function (error, user) {
         if (error) {
           return res
             .status(401)
-            .json({ message: "Data update error user " + error });
-        } else {
-          return res
-            .status(201)
-            .json({ message: "User update successfully! ", User });
+            .json({ message: "Users id invalid! " + req.params._id });
         }
+
+        user.name_user = req.body.name_user;
+        user.email_user = req.body.email_user;
+        user.type_user = req.body.type_user;
+        user.password_user = req.body.password_user;
+        user.photo_profile_user = req.body.photo_profile_user;
+
+        user.save(function (error) {
+          if (error) {
+            return res
+              .status(401)
+              .json({ message: "Data update error user " + error });
+          } else {
+            return res
+              .status(201)
+              .json({ message: "User update successfully! ", user });
+          }
+        });
       });
     } catch (error) {
       next(error);
