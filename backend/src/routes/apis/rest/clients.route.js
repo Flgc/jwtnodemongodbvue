@@ -8,17 +8,17 @@
 
 const express = require("express");
 const Router = express.Router();
-const Clients = require("../../../controllers/clients.controller");
+const Clients = require("../../../controllers/clients.controllers");
 
-Router.get("/", Clients.index); // ok
-Router.get("/attendance", Clients.getAttendace); //ok
-Router.get("/details/:_id", Clients.details); //ok
+Router.get("/", Clients.index);
+Router.post("/include", Clients.create);
+Router.get("/allclient", Clients.returnAllclients);
+Router.get("/details/:_id", Clients.details);
+Router.delete("/delete/:_id", Clients.delete);
+Router.put("/update/:_id", Clients.update);
 
-Router.post("/", Clients.create); //ok
-
-Router.put("/:_id", Clients.switchAt); //ok
+Router.get("/attendance", Clients.getAttendace);
+Router.put("/:_id", Clients.switchAt);
 Router.patch("/first", Clients.SwitchFist);
-
-Router.delete("/:_id", Clients.delete); //ok
 
 module.exports = Router;

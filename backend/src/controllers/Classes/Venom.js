@@ -11,10 +11,10 @@ const dialogflow = require("./Dialogflow");
 const io = require("../../../server");
 
 const path = require("path");
-const messageHelper = require("../../controllers/messages.controller");
+const messageHelper = require("../../controllers/clients.controllers");
 const notifierHelper = require("../Classes/Notifier");
 const notifier = new notifierHelper();
-const clientHelper = require("../clients.controller");
+const clientHelper = require("../clients.controllers");
 const auxFunctions = require("../../Functions/functions");
 const fs = require("fs");
 
@@ -214,7 +214,7 @@ module.exports = class {
               });
             await this.Client.sendText(
               message.from,
-              "Ótimo! Você já está cadastrado, o que deseja?"
+              "Ótimo! Você já está cadastrado, como podemos ajudar?"
             ); //menu
             let index = this.#IntenalAwaiting.indexOf(message.from) + 1;
             this.#IntenalAwaiting = this.#IntenalAwaiting.splice(index, 1);
