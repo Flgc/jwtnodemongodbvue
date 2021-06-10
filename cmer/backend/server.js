@@ -36,8 +36,8 @@ let serverRest;
 
 (async function () {
   await mongoConector();
-  await WhatsApp.createInternal();
-  await WhatsApp.initilizeInternal();
+  //await WhatsApp.createInternal();
+  //await WhatsApp.initilizeInternal();
 })();
 
 let io;

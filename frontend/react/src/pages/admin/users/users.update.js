@@ -74,8 +74,8 @@ export default function UsersUpdate() {
   // Returns data from database users to the local variable
   useEffect(() => {
     async function getUsers() {
-      var res = await apiConnecting.get('/api/users.details/' + userId);
-      console.log(res);
+      var res = await apiConnecting.get('/api/users/details/' + userId);
+      //console.log(res);
       setNome(res.data.name_user);
       setEmail(res.data.email_user);
       setTipo(res.data.type_user);
@@ -102,7 +102,7 @@ export default function UsersUpdate() {
       tipo_form !== '' &&
       senha_form !== ''
     ) {
-      const res = await apiConnecting.put('/api/users/' + userId, data);
+      const res = await apiConnecting.put('/api/users/update/' + userId, data);
 
       if (res.status === 201) {
         window.location.href = '/admin/users';

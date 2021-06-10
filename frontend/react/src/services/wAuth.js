@@ -25,7 +25,7 @@ export default function WAuth({ component: Component, ...rest }) {
         setLoading(false);
         setRedirect(false);
       } else {
-        // Return to the login page
+        //  Return to the login page
         logout();
         setLoading(false);
         setRedirect(true);

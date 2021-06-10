@@ -14,7 +14,6 @@ import Grid from '@material-ui/core/Grid';
 import MenuAdmin from '../../../components/menu-admin';
 import { getTypeUser } from '../../../services/auth';
 import Footer from '../../../components/footer-admin';
-//import Paper from '@material-ui/core/Paper';
 
 import DashAdmin from './admin';
 import DashManager from './manager';

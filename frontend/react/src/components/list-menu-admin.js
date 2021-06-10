@@ -18,8 +18,9 @@ import PeopleIcon from '@material-ui/icons/People';
 //import BarChartIcon from '@material-ui/icons/BarChart';
 import WhatsApp from '@material-ui/icons/WhatsApp';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import apiConnecting from '../services/apiConnecting';
-import { getToken, logout } from '../services/auth';
+//import apiConnecting from '../services/apiConnecting';
+//import { getToken, logout } from '../services/auth';
+import { logout } from '../services/auth';
 
 export const mainListItems = (
   <div>
@@ -70,14 +71,16 @@ export const secondaryListItems = (
 
 async function exitConfirm() {
   if (window.confirm('Deseja realmente sair do sistema?')) {
-    const response = await apiConnecting.get('/api/users/destroytoken', {
-      headers: { token: getToken() },
-    });
-    if (response.status === 200) {
-      logout();
-      window.location.href = '/admin/login';
-    } else {
-      alert('Não foi possível fazer o logout!');
-    }
+    logout();
+    window.location.href = '/admin/login';
+    // const response = await apiConnecting.get('/api/users/destroytoken', {
+    // headers: { token: getToken() },
+    // });
+    // if (response.status === 200) {
+    // logout();
+    // window.location.href = '/admin/login';
+    // } else {
+    // alert('Não foi possível fazer o logout!');
+    // }
   }
 }

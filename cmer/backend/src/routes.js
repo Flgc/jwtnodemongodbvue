@@ -22,6 +22,6 @@ routes.get('/api/users/checktoken', Users.checkToken);
 routes.get('/api/users/destroytoken', Users.destroyToken);
 
 // Whatsapp Routes
-routes.use('/whatsapp', require('./routes/venom/venom.route'));
+//routes.use('/api/whatsapp', require('./routes/venom/venom.route'));
 
 module.exports = routes;

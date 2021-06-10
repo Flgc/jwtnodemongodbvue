@@ -68,7 +68,7 @@ export default function UsersList() {
   // Get existing users from the database
   useEffect(() => {
     async function loadUsers() {
-      const res = await apiConnecting.get('/api/users.all');
+      const res = await apiConnecting.get('/api/users/alluser');
       setUsers(res.data);
       setLoading(false);
     }
@@ -80,7 +80,7 @@ export default function UsersList() {
 
   async function handleDelete(id) {
     if (window.confirm('Deseja realmente excluir este usuário?')) {
-      var res = await apiConnecting.delete('/api/users/' + id);
+      var res = await apiConnecting.delete('/api/users/delete/' + id);
       if (res.status === 201) {
         window.location.href = '/admin/users';
       } else {

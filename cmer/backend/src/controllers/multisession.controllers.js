@@ -6,11 +6,11 @@
  * Data: 01/06/2021
  */
 
-exports.index = async (req, res) => {
-  res
-    .status(200)
-    .json({ message: 'Hello World from multisession Controllers' });
-};
+// exports.index = async (req, res) => {
+// res
+// .status(200)
+// .json({ message: 'Hello World from multisession Controllers' });
+// };
 
 const Venom = require('./class/venom');
 const path = require('path');

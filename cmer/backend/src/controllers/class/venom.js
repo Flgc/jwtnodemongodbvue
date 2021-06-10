@@ -166,6 +166,8 @@ module.exports = class {
     this.Client.onMessage(async (message) => await this.execMessages(message));
   }
 
+  //-------------------------------------------------------------
+
   async execMessages(message) {
     let intent;
     try {

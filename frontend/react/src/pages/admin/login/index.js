@@ -77,7 +77,7 @@ export default function SignIn() {
 
   // Start login validation
   async function handleSubmit() {
-    await ApiConnecting.post('/api/users/login', {
+    await ApiConnecting.post('/api/login', {
       email: email,
       password: password,
     }).then((res) => {

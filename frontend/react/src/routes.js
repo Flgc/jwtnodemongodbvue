@@ -32,46 +32,56 @@ export default function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        {/* Client Route*/}
+        {/* Home Route*/}
         <Route path="/" exact component={Home} />
+
+        {/* Login Route*/}
+        <Route path="/admin/login" exact component={Login} />
+
+        {/* Admin Route*/}
+        <PrivateRoute path="/admin" exact component={Dashboard} />
+        <Route path="/admin" exact component={Dashboard} />
+
+        {/* Users Route*/}
+        <PrivateRoute path="/admin/users" exact component={Users} />
+
+        <PrivateRoute
+          path="/admin/users/include"
+          exact
+          component={UsersInsert}
+        />
+
+        <PrivateRoute
+          path="/admin/users/update/:userId"
+          exact
+          component={UsersUpdate}
+        />
+
+        {/* Client Route*/}
+        <PrivateRoute
+          path="/admin/whatsappclient"
+          exact
+          component={WhatsAppClient}
+        />
+
         <PrivateRoute
           path="/whatsappclient/:idClient"
           exact
           component={WhatasppClientDetails}
         />
 
-        {/* Admin Route*/}
-        <Route path="/admin/login" exact component={Login} />
-        <PrivateRoute path="/admin" exact component={Dashboard} />
-
-        <PrivateRoute
-          path="/admin/whatsappclient"
-          exact
-          component={WhatsAppClient}
-        />
         <PrivateRoute
           path="/admin/whatsappclient/include"
           exact
           component={WhatsAppClientInsert}
         />
+
         <PrivateRoute
           path="/admin/whatsappclient/update/:idClient"
           exact
           component={WhatsAppClientUpdate}
         />
 
-        {/* Users Route*/}
-        <PrivateRoute path="/admin/users" exact component={Users} />
-        <PrivateRoute
-          path="/admin/users/include"
-          exact
-          component={UsersInsert}
-        />
-        <PrivateRoute
-          path="/admin/users/update/:userId"
-          exact
-          component={UsersUpdate}
-        />
       </Switch>
     </BrowserRouter>
   );
