@@ -107,7 +107,7 @@ export default function UsersUpdate() {
       if (res.status === 201) {
         window.location.href = '/admin/users';
       } else {
-        alert('Erro ao atualizar o usuário!s');
+        alert('Erro ao atualizar o usuário!');
       }
     } else {
       alert('Por favor, preencha todos os dados obrigatório!');

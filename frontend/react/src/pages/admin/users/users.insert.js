@@ -88,7 +88,7 @@ export default function UsersInsert() {
       if (res.status === 201) {
         window.location.href = '/admin/users';
       } else {
-        alert('Erro ao cadastrar o usuário!s');
+        alert('Erro ao cadastrar o usuário!');
       }
     } else {
       alert('Por favor, preencha todos os dados obrigatório!');
