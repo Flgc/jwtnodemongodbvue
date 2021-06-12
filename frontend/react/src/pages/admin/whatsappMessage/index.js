@@ -79,7 +79,7 @@ export default function WhatsAppMessageList() {
     if (window.confirm('Deseja realmente excluir esta mensagem?')) {
       var res = await apiConnecting.delete('/api/messages/delete/' + id);
       if (res.status === 201) {
-        window.location.href = '/admin/whatsappclient';
+        window.location.href = '/admin/whatsappMessage';
       } else {
         alert('Ocorreu um erro. Por favor, tente novamente');
       }
@@ -97,15 +97,6 @@ export default function WhatsAppMessageList() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item sm={12}>
-              {/* <Button
-                style={{ marginBottom: '10px' }}
-                variant="contained"
-                color="primary"
-                href={'/admin/whatsappclient/include'}
-              >
-                <AddIcon />
-                Cadastrar
-              </Button> */}
               <Paper className={classes.paper}>
                 <h2>Listagem de Mensagens Gravadas</h2>
                 <Grid container spacing={3}>
@@ -126,32 +117,56 @@ export default function WhatsAppMessageList() {
                         >
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome</TableCell>
+                              <TableCell>
+                                <b>Tipo</b>
+                              </TableCell>
                               <TableCell align="left">
-                                Contato (ChatID)
+                                <b>ChatId</b>
                               </TableCell>
-                              <TableCell align="center">
-                                {/* Espaço em branco para manter a formatação da coluna - todo */}
+                              <TableCell align="left">
+                                <b>Contato</b>
                               </TableCell>
-                              <TableCell align="center">
-                                Data de Cadastro
+                              <TableCell align="left">
+                                <b>Data do Cadastro</b>
                               </TableCell>
-                              <TableCell align="right">Opções</TableCell>
+                              <TableCell align="right">
+                                <b>Opções</b>
+                              </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
                             {messages.map((row) => (
                               <TableRow key={row._id}>
                                 <TableCell component="th" scope="row">
-                                  {row.fullName}
-                                  <tr> - </tr>
-                                  <tr>ProfileUrl: {row.profileUrl}</tr>
+                                  {row.type}
+                                  <tr>
+                                    <b>Body: </b>
+                                    {row.body}
+                                  </tr>
+                                  <tr>
+                                    <b>FileLink: </b>
+                                    {row.fileLink}
+                                  </tr>
+                                  <tr>
+                                    <b>FileLinkDownload: </b>
+                                    {row.fileLinkDownload}
+                                  </tr>
                                 </TableCell>
-                                <TableCell align="left">{row.chatId}</TableCell>
-                                <TableCell align="center">
-                                  {/* Espaço em branco para manter a formatação da coluna - todo */}
+                                <TableCell align="left">
+                                  {row.chatId}
+                                  <tr>
+                                    <b>Message: </b>
+                                    {row.message}
+                                  </tr>
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell align="left">
+                                  {row.author}
+                                  <tr>
+                                    <b>FileName: </b> {row.fileName}
+                                  </tr>
+                                </TableCell>
+                                {/* <TableCell align="center"></TableCell> */}
+                                <TableCell align="left">
                                   {new Date(row.createdAt).toLocaleString(
                                     'pt-br'
                                   )}
@@ -161,13 +176,6 @@ export default function WhatsAppMessageList() {
                                     size="small"
                                     aria-label="small outlined button group"
                                   >
-                                    {/* <Button
-                                      color="primary"
-                                      href={'/admin/messages/update/' + row._id}
-                                    >
-                                      <AutorenewIcon />
-                                      Atualizar
-                                    </Button> */}
                                     <Button
                                       color="secondary"
                                       onClick={() => handleDelete(row._id)}

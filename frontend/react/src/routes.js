@@ -21,8 +21,10 @@ import Users from './pages/admin/users';
 import UsersInsert from './pages/admin/users/users.insert';
 import UsersUpdate from './pages/admin/users/users.update';
 
-// Client imports
+//Home Page
 import Home from './pages/client/home';
+
+// Client imports
 import WhatasppClientDetails from './pages/client/whatsappClient/whatsappClient.details';
 
 import whatsappMessage from './pages/admin/whatsappMessage';

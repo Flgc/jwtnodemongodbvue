@@ -17,7 +17,7 @@ import Footer from '../../../components/footer-admin';
 
 import DashAdmin from './admin';
 import DashManager from './manager';
-import DashEmployee from './employee';
+import DashEmployee from '../../client/home/home';
 
 const useStyles = makeStyles((theme) => ({
   root: {
