@@ -12,6 +12,8 @@ const Router = express.Router();
 
 Router.get("/", messageController.index);
 Router.get("/allmessage", messageController.returnAllmessages);
+Router.get("/chatid/:chatId", messageController.returnDetails);
 Router.get("/:chatId", messageController.details);
+Router.delete("/delete/:_id", messageController.delete);
 
 module.exports = Router;
