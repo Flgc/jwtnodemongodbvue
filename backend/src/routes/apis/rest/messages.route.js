@@ -10,7 +10,8 @@ const express = require("express");
 const messageController = require("../../../controllers/messages.controller");
 const Router = express.Router();
 
-Router.get("/", messageController.index); //ok
+Router.get("/", messageController.index);
+Router.get("/allmessage", messageController.returnAllmessages);
 Router.get("/:chatId", messageController.details);
 
 module.exports = Router;

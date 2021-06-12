@@ -48,7 +48,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Reports" />
     </ListItem> */}
-    <ListItem button>
+    <ListItem button component="a" href="/admin/whatsappMessage">
       <ListItemIcon>
         <WhatsApp />
       </ListItemIcon>

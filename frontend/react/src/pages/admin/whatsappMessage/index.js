@@ -2,7 +2,7 @@
  * Project: "PA IGTI - Controle de Manutenção API com Node.js & MongoDb"
  * mecanicaBot
  *
- * file: src/pages/admin/whatsappClient/index.js
+ * file: src/pages/admin/whatsappMessage/index.js
  * Description:
  * Data: 09/06/2021
  */
@@ -56,28 +56,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WhatsAppClientList() {
+export default function WhatsAppMessageList() {
   const classes = useStyles();
 
-  const [clients, setClients] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Get existing clients from the database
+  // Get existing messages from the database
   useEffect(() => {
-    async function loadclients() {
-      const res = await apiConnecting.get('/api/clients/allclient');
-      setClients(res.data);
+    async function loadMessages() {
+      const res = await apiConnecting.get('/api/messages/allmessage');
+      setMessages(res.data);
       setLoading(false);
     }
-    //loadclients();
+    //loadMessages();
 
     // Wait 0,5 seconds to view the load
-    setTimeout(() => loadclients(), 500);
+    setTimeout(() => loadMessages(), 500);
   }, []);
 
   async function handleDelete(id) {
-    if (window.confirm('Deseja realmente excluir este cliente?')) {
-      var res = await apiConnecting.delete('/api/clients/delete/' + id);
+    if (window.confirm('Deseja realmente excluir esta mensagem?')) {
+      var res = await apiConnecting.delete('/api/messages/delete/' + id);
       if (res.status === 201) {
         window.location.href = '/admin/whatsappclient';
       } else {
@@ -90,7 +90,7 @@ export default function WhatsAppClientList() {
     <div className={classes.root}>
       {/**/}
       {/* Desestructured Menu Layout */}
-      <MenuAdmin title={'CLIENTES'} />
+      <MenuAdmin title={'MENSAGENS GRAVADAS'} />
       {/**/}
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -107,12 +107,12 @@ export default function WhatsAppClientList() {
                 Cadastrar
               </Button> */}
               <Paper className={classes.paper}>
-                <h2>Listagem de Clientes</h2>
+                <h2>Listagem de Mensagens Gravadas</h2>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={12}>
                     <TableContainer component={Paper}>
                       {/* 
-                        Progress bar for clients loading 
+                        Progress bar for messages loading 
                       */}
                       {loading ? (
                         <LinearProgress
@@ -140,7 +140,7 @@ export default function WhatsAppClientList() {
                             </TableRow>
                           </TableHead>
                           <TableBody>
-                            {clients.map((row) => (
+                            {messages.map((row) => (
                               <TableRow key={row._id}>
                                 <TableCell component="th" scope="row">
                                   {row.fullName}
@@ -163,7 +163,7 @@ export default function WhatsAppClientList() {
                                   >
                                     {/* <Button
                                       color="primary"
-                                      href={'/admin/clients/update/' + row._id}
+                                      href={'/admin/messages/update/' + row._id}
                                     >
                                       <AutorenewIcon />
                                       Atualizar

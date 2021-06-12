@@ -21,6 +21,21 @@ module.exports = {
     }
   },
 
+  // Return all Messages
+  async returnAllmessages(req, res, next) {
+    try {
+      Messages.find(function (err, mess) {
+        if (err)
+          res.status(401).json({ message: "Error listing messages: " + err });
+
+        res.json(mess);
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Messages return Id:
   async details(req, res, next) {
     try {
       let { chatId } = req.params;
@@ -77,5 +92,19 @@ module.exports = {
     Message = await Messages.create(data);
     console.log("criado");
     return;
+  },
+
+  // Return all messages
+  async returnAllMessages(req, res, next) {
+    try {
+      Messages.find(function (err, mess) {
+        if (err)
+          res.status(401).json({ message: "Error listing sessages: " + err });
+
+        res.json(mess);
+      });
+    } catch (error) {
+      next(error);
+    }
   },
 };

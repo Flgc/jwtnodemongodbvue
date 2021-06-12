@@ -25,6 +25,8 @@ import UsersUpdate from './pages/admin/users/users.update';
 import Home from './pages/client/home';
 import WhatasppClientDetails from './pages/client/whatsappClient/whatsappClient.details';
 
+import whatsappMessage from './pages/admin/whatsappMessage';
+
 // Authorization
 import PrivateRoute from './services/wAuth';
 
@@ -82,6 +84,12 @@ export default function Routes() {
           component={WhatsAppClientUpdate}
         />
 
+        {/* whatsappMessage Route*/}
+        <PrivateRoute
+          path="/admin/whatsappMessage"
+          exact
+          component={whatsappMessage}
+        />
       </Switch>
     </BrowserRouter>
   );
