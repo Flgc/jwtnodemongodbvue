@@ -186,7 +186,7 @@ module.exports = {
       req.cookies.token ||
       req.headers["x-access-token"] ||
       req.headers.authorization;
-
+    console.log(req.headers.token);
     if (token) {
       res.cookie("token", null, { httpOnly: true });
     } else {
