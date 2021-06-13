@@ -12,7 +12,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -26,6 +25,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import MenuHome from '../../../components/menu-home';
+import Footer from '../../../components/footer-admin';
 
 import ApiConnecting from '../../../services/apiConnecting';
 import {
@@ -35,21 +37,26 @@ import {
   setTypeUser,
 } from '../../../services/auth';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="#">
-        MecanicaBot
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  title: {
+    flexGrow: 1,
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
   paper: {
+    padding: theme.spacing(2),
+    overflow: 'auto',
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
@@ -109,90 +116,102 @@ export default function SignIn() {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Digite seu email"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          // Enable variable in form
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        {/* <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          name="password"
-          label="Digite sua senha"
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          //Enable variable in form
-          onChange={(e) => {
-            setSenha(e.target.value);
-          }}
-        /> */}
+    <div className={classes.root}>
+      {/**/}
+      {/* Desestructured Menu Layout */}
+      <MenuHome
+        title={
+          'PROJETO APLICATO IGTI - Controle de Manutenção API com Node.js & MongoDb'
+        }
+      />
+      {/**/}
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            {/**/}
+            {/*< INICIO DA TELA DE LOGIN >*/}
+            {/**/}
+            <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Login
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Digite seu email"
+                  name="email"
+                  autoComplete="email"
+                  autoFocus
+                  // Enable variable in form
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
 
-        <FormControl
-          variant="outlined"
-          style={{ width: '100%', marginTop: 10 }}
-        >
-          <InputLabel htmlFor="passwordField">Digite sua senha *</InputLabel>
-          <OutlinedInput
-            id="passwordField"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => {
-              setSenha(e.target.value);
-            }}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={(e) => setShowPassword(!showPassword)}
-                  edge="end"
+                <FormControl
+                  variant="outlined"
+                  style={{ width: '100%', marginTop: 10 }}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={133}
-          />
-        </FormControl>
+                  <InputLabel htmlFor="passwordField">
+                    Digite sua senha *
+                  </InputLabel>
+                  <OutlinedInput
+                    id="passwordField"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => {
+                      setSenha(e.target.value);
+                    }}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={(e) => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    labelWidth={133}
+                  />
+                </FormControl>
 
-        <Button
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={classes.submit}
-          //start function
-          onClick={loadSubmit}
-          disabled={loading}
-        >
-          {loading ? <CircularProgress /> : 'Entrar'}
-        </Button>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  //start function
+                  onClick={loadSubmit}
+                  disabled={loading}
+                >
+                  {loading ? <CircularProgress /> : 'Entrar'}
+                </Button>
+              </div>
+            </Container>
+            {/**/}
+            {/*< FINAL DA TELA DE LOGIN >*/}
+            {/**/}
+          </Grid>
+          <Box pt={4}>
+            {/**/}
+            {/* Desestructured Footer Layout */}
+            <Footer />
+            {/**/}
+          </Box>
+        </Container>
+      </main>
+    </div>
   );
 }

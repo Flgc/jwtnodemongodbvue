@@ -129,13 +129,21 @@ export default function UsersList() {
                         >
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome</TableCell>
-                              <TableCell align="left">Email</TableCell>
-                              <TableCell align="center">Tipo</TableCell>
-                              <TableCell align="center">
-                                Data de Cadastro
+                              <TableCell>
+                                <b>Nome</b>
                               </TableCell>
-                              <TableCell align="right">Opções</TableCell>
+                              <TableCell align="left">
+                                <b>Email</b>
+                              </TableCell>
+                              <TableCell align="center">
+                                <b>Tipo</b>
+                              </TableCell>
+                              <TableCell align="center">
+                                <b>Data de Cadastro</b>
+                              </TableCell>
+                              <TableCell align="right">
+                                <b>Opções</b>
+                              </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>

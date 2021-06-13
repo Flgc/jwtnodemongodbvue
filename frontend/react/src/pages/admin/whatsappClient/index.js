@@ -126,17 +126,21 @@ export default function WhatsAppClientList() {
                         >
                           <TableHead>
                             <TableRow>
-                              <TableCell>Nome</TableCell>
+                              <TableCell>
+                                <b>Nome</b>
+                              </TableCell>
                               <TableCell align="left">
-                                Contato (ChatID)
+                                <b>Contato (ChatID)</b>
                               </TableCell>
                               <TableCell align="center">
                                 {/* Espaço em branco para manter a formatação da coluna - todo */}
                               </TableCell>
                               <TableCell align="center">
-                                Data de Cadastro
+                                <b>Data de Cadastro</b>
                               </TableCell>
-                              <TableCell align="right">Opções</TableCell>
+                              <TableCell align="right">
+                                <b>Opções</b>
+                              </TableCell>
                             </TableRow>
                           </TableHead>
                           <TableBody>
@@ -145,7 +149,9 @@ export default function WhatsAppClientList() {
                                 <TableCell component="th" scope="row">
                                   {row.fullName}
                                   <tr> - </tr>
-                                  <tr>ProfileUrl: {row.profileUrl}</tr>
+                                  <tr>
+                                    <b>ProfileUrl: </b> {row.profileUrl}
+                                  </tr>
                                 </TableCell>
                                 <TableCell align="left">{row.chatId}</TableCell>
                                 <TableCell align="center">

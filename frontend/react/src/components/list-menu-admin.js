@@ -18,8 +18,8 @@ import PeopleIcon from '@material-ui/icons/People';
 //import BarChartIcon from '@material-ui/icons/BarChart';
 import WhatsApp from '@material-ui/icons/WhatsApp';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-//import apiConnecting from '../services/apiConnecting';
-//import { getToken, logout } from '../services/auth';
+// import apiConnecting from '../services/apiConnecting';
+// import { getToken, logout } from '../services/auth';
 import { logout } from '../services/auth';
 
 export const mainListItems = (
@@ -42,12 +42,6 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Clientes" />
     </ListItem>
-    {/* <ListItem button>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItem> */}
     <ListItem button component="a" href="/admin/whatsappMessage">
       <ListItemIcon>
         <WhatsApp />
@@ -72,15 +66,16 @@ export const secondaryListItems = (
 async function exitConfirm() {
   if (window.confirm('Deseja realmente sair do sistema?')) {
     logout();
-    window.location.href = '/admin/login';
-    // const response = await apiConnecting.get('/api/users/destroytoken', {
-    // headers: { token: getToken() },
-    // });
-    // if (response.status === 200) {
-    // logout();
-    // window.location.href = '/admin/login';
-    // } else {
-    // alert('Não foi possível fazer o logout!');
-    // }
+    window.location.href = '/';
+
+    //   const response = await apiConnecting.get('/api/users/destroytoken', {
+    //     headers: { token: getToken() },
+    //   });
+    //   if (response.status === 200) {
+    //     logout();
+    //     window.location.href = '/';
+    //   } else {
+    //     alert('Não foi possível fazer o logout!');
+    //   }
   }
 }
