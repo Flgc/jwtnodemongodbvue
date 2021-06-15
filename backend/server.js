@@ -26,11 +26,6 @@ const restApi = express();
 const mongoConector = require('./src/config/mongooseConnection.config');
 const WhatsApp = require('./src/controllers/multisession.controller');
 
-// app.listen(port, () => {
-// console.log('Aplicação em execução na porta...:', port);
-// });
-
-//----------------------------------------------------------------------------
 
 let serverRest;
 

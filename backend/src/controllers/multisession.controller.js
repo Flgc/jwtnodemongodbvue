@@ -95,6 +95,32 @@ module.exports = {
     }
   },
 
+  async initializeSessionFront(req, res, next) {
+    let id = req.query.id;
+    if (!id) {
+      res.status(200).json({ status: 2, error: "Informe o número da sessão!" });
+    }
+    try {
+      await sessions[id]
+        .initVenom()
+        .then(() => {
+          started.push(id);
+          res.status(200).json({
+            status: 1,
+            id: id,
+            message: "Nova sessão inicializada com sucesso! " + id,
+          });
+        })
+        .catch((e) => {
+          res
+            .status(401)
+            .json({ status: 2, error: "Erro no servidor!", error: e });
+        });
+    } catch (error) {
+      next(error);
+    }
+  },
+
   verifySession(req, res, next) {
     try {
       let id = req.params.id;

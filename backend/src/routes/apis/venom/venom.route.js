@@ -15,13 +15,14 @@ const trustID = require("../../../middlewares/idPasser");
 
 Router.get("/qrcode", trustID, Venom.qrCode); // /qrcode?id=1
 
-Router.get("/sessions", jwtPasser, Venom.getMax); // ok
+//Router.get("/sessions", jwtPasser, Venom.getMax); // ok
 /* http://localhost:3333/api/whatsapp/sessions */
 
 Router.get("/sessions.details/:id", jwtPasser, Venom.verifySession); // ok
 /* http://localhost:3333/api/whatsapp/sessions.details/2 */
 
-Router.post("/sessions", jwtPasser, trustID_SESSION, Venom.initializeSession); // ok
+Router.post("/sessions", trustID_SESSION, Venom.initializeSession); // ok
+Router.post("/sessionfront", trustID_SESSION, Venom.initializeSessionFront); // ok
 /* http://localhost:3333/api/whatsapp/sessions?id=2 */
 
 Router.delete("/sessions", jwtPasser, trustID, Venom.closeSession); // ok

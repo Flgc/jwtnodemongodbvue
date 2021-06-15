@@ -124,9 +124,7 @@ module.exports = {
         console.log(err);
         res.status(200).json({ error: err });
       } else if (!user) {
-        res
-          .status(200)
-          .json({ status: 2, error: "1Email ou senha incorreto!" });
+        res.status(200).json({ status: 2, error: "Email ou senha incorreto!" });
       } else {
         user.isCorrectPassword(password, async function (err, same) {
           if (err) {
@@ -134,7 +132,7 @@ module.exports = {
           } else if (!same) {
             res
               .status(200)
-              .json({ status: 2, error: "2Email ou senha incorreto!" });
+              .json({ status: 2, error: "Email ou senha incorreto!" });
           } else {
             const payload = { email };
             const token = jwt.sign(payload, secret, {
