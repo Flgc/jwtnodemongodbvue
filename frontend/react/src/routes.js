@@ -23,6 +23,7 @@ import UsersUpdate from './pages/admin/users/users.update';
 
 //Home Page
 import Home from './pages/client/home';
+import NSessao from './pages/client/home/novaSessao';
 
 // Client imports
 import WhatasppClientDetails from './pages/client/whatsappClient/whatsappClient.details';
@@ -38,6 +39,9 @@ export default function Routes() {
       <Switch>
         {/* Home Route*/}
         <Route path="/" exact component={Home} />
+
+        {/* Nova Sessão* */}
+        <Route path="/sessao" exact component={NSessao} />
 
         {/* Login Route*/}
         <Route path="/admin/login" exact component={Login} />

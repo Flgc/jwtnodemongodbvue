@@ -132,5 +132,5 @@ module.exports = {
     Message = await Messages.create(data);
     console.log("criado");
     return;
-  },
+  }
 };

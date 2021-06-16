@@ -11,7 +11,7 @@ const dialogflow = require("./Dialogflow");
 const io = require("../../../server");
 
 const path = require("path");
-const messageHelper = require("../../controllers/clients.controllers");
+const messageHelper = require("../../controllers/messages.controller");
 const notifierHelper = require("../Classes/Notifier");
 const notifier = new notifierHelper();
 const clientHelper = require("../clients.controllers");
@@ -182,7 +182,9 @@ module.exports = class {
       }
 
       let RequestMongo = await clientHelper.findInternal(message.from);
-      console.log(RequestMongo);
+
+      console.log("Olha o Cliente: >>> " + RequestMongo);
+
       if (!RequestMongo.Exists) {
         if (!this.#IntenalAwaiting.includes(message.from)) {
           this.#IntenalAwaiting.push(message.from);
@@ -232,10 +234,13 @@ module.exports = class {
       let User = RequestMongo.User;
 
       if (User.inAttendace === true) {
+        console.log("Olha Atendente 0 ");
+
         if (message.body == "!sair") {
           await clientHelper.switchAttendance(User);
           return;
         }
+        console.log("Olha Atendente 1 ");
 
         if (message.type == "chat") {
           let type = message.type;
@@ -243,8 +248,13 @@ module.exports = class {
           let body = message.body;
           let chatId = message.from;
 
+          console.log("Olha Atendente 2 ");
+
           await messageHelper.createText(type, author, body, chatId);
+
+          console.log("Olha Atendente 3 ");
         } else {
+          console.log("Olha Atendente 4 ");
           let type = message.type;
           let author = User.fullName;
           let chatId = message.from;
@@ -253,14 +263,17 @@ module.exports = class {
             message.from,
             message.mimetype
           );
+          console.log("Olha Atendente 5 ");
           let link = `http://${process.env.HOST}:${process.env.PORT}/files/${message.from}?file=${fileName}`;
           let fileLinkDownload = `http://${process.env.HOST}:${process.env.PORT}/files/${message.from}?file=${fileName}&download=true`;
           let dirN = dirF + "/" + fileName;
-
+          console.log("Olha Atendente 6 ");
           fs.mkdir(dirF, { recursive: true }, () => {});
+          console.log("Olha Atendente 7 ");
           const buffer = await this.Client.decryptFile(message);
+          console.log("Olha Atendente 8 ");
           fs.writeFile(dirN, buffer, () => {});
-
+          console.log("Olha Atendente 9 ");
           await messageHelper.createMedia(
             type,
             fileName,
@@ -270,8 +283,9 @@ module.exports = class {
             fileLinkDownload,
             false
           );
+          console.log("Olha Atendente 10 ");
         }
-
+        console.log("Olha Atendente 11 ");
         return io.emit("newMessage", { from: message.from });
       }
 
@@ -331,12 +345,17 @@ module.exports = class {
         message.type === "ptt"
       ) {
         const Buffer = await this.Client.decryptFile(message);
+
         let nameAudio = auxFunctions.WriteFileMime(
           message.from,
           message.mimetype
         );
+
         let dir = path.join(__dirname, "/Temp", nameAudio);
         fs.writeFileSync(dir, Buffer, "base64", () => {});
+
+        console.log("passei 1 : ");
+
         let response = await bot.detectAudio(dir, true);
 
         try {
@@ -377,13 +396,19 @@ module.exports = class {
         }
       }
 
-      if (intent === process.env.INTENT_SAC) {
-        console.log("Atendimento solicitado via chat");
-        await clientHelper.switchFirst(User);
-        io.emit("newAttendace", { name: User.fullName, chatId: message.from });
-        notifier.notify("Um novo cliente pediu atendimento");
-      }
+      console.log("passei 0 : Video/Foto/Arq ");
+
+      //if (intent === process.env.INTENT_SAC) {
+      console.log("Atendimento solicitado via chat");
+      await clientHelper.switchFirst(User);
+      console.log("passei 1 : Video/Foto/Arq ");
+      io.emit("newAttendace", { name: User.fullName, chatId: message.from });
+      console.log("passei 2 : Video/Foto/Arq ");
+      notifier.notify("Um novo cliente pediu atendimento");
+      //}
+      console.log("passei 3 : Video/Foto/Arq ");
     } catch (e) {
+      console.log("passei 4 : Video/Foto/Arq ");
       console.error("Error " + e);
     }
   }

@@ -333,6 +333,7 @@ module.exports = {
       inAttendace = true;
       firstAttendace = true;
       data = { fullName, profileUrl, chatId, inAttendace, firstAttendace };
+      //let Client = await Clients.useFindAndModify({ _id }, data, {
       let Client = await Clients.findOneAndUpdate({ _id }, data, {
         new: false,
       });

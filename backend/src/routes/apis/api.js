@@ -8,13 +8,9 @@
 
 const express = require("express");
 const api = express.Router();
-const jwtPasser = require("../../middlewares/verify");
 
 api.use("/login", require("./rest/login.route"));
 api.use("/", require("./rest/rest.route"));
 api.use("/whatsapp", require("./venom/venom.route"));
-
-// Rota do Usuário do sistema - Requer token
-// api.use("/", jwtPasser, require("./rest/rest.route"));
 
 module.exports = api;

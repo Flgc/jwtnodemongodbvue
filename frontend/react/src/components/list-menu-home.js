@@ -29,8 +29,7 @@ export const mainListItems = (
 export const secondaryListItems = (
   <div>
     <ListSubheader inset>Whatsapp</ListSubheader>
-    {/* <ListItem button component="a" href="/admin/whatsappMessage"> */}
-    <ListItem button component="a" href="/">
+    <ListItem button component="a" href="/sessao">
       <ListItemIcon>
         <WhatsApp />
       </ListItemIcon>
